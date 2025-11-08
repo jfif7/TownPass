@@ -18,6 +18,31 @@ services:
     networks:
       - townpass-network
 
+  backend:
+    build: .
+    container_name: townpass-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://townpass:townpass@db:5432/townpass
+      - DEBUG=true
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - townpass-network
+    volumes:
+      - ./app:/app/app:ro  # Mount app directory for development
+    restart: unless-stopped
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: townpass-backend-tunnel
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    restart: unless-stopped
+    networks:
+      - townpass-network
+
 volumes:
   postgres_data:
     driver: local

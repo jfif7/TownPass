@@ -32,14 +32,30 @@ class NfcService extends GetxService {
     return await NfcManager.instance.stopSession();
   }
 
-  Future<String?> readNfc() async {
+  Future<String?> readNfc({
+    Duration timeout = const Duration(seconds: 30),
+    Duration pollInterval = const Duration(milliseconds: 100),
+  }) async {
     if (!isNfcAvailable) {
       return Future.error('NFC not available');
     }
-    String? hexId =
-        nfcId?.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
-    nfcId = null;
-    return hexId;
+
+    final endTime = DateTime.now().add(timeout);
+    
+    // Long polling: wait for NFC data to become available
+    while (DateTime.now().isBefore(endTime)) {
+      if (nfcId != null) {
+        String hexId = nfcId!.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
+        nfcId = null;
+        return hexId;
+      }
+      
+      // Wait before checking again
+      await Future.delayed(pollInterval);
+    }
+    
+    // Timeout reached, return null
+    return null;
   }
 
   Uint8List? getId(NfcTag tag) {

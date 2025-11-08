@@ -29,6 +29,7 @@ class NfcService extends GetxService {
   }
 
   Future<void> stopNfcSession() async {
+    nfcId = null;
     return await NfcManager.instance.stopSession();
   }
 

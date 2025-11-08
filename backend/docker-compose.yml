@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: townpass-db
+    environment:
+      POSTGRES_USER: townpass
+      POSTGRES_PASSWORD: townpass
+      POSTGRES_DB: townpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U townpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - townpass-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  townpass-network:
+    driver: bridge
+

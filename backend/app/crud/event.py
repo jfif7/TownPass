@@ -51,14 +51,17 @@ def get_event_by_id(db: Session, event_id: int) -> Event | None:
 def get_user_event_progress(db: Session, user_id: int, event_id: int) -> dict:
     """取得使用者在活動的進度"""
     from app.models.nfc_tag import NFCTag
+    from app.models.checkpoint import Checkpoint
     
     # 取得活動的所有 missions
     missions = db.query(Mission).filter(Mission.event_id == event_id).all()
     total_missions = len(missions)
     
-    # 取得使用者完成的 missions（通過 attendance -> nfc_tag -> mission）
+    # 取得使用者完成的 missions（通過 attendance -> nfc_tag -> checkpoint -> mission）
     completed_mission_ids = db.query(Mission.id).join(
-        NFCTag, NFCTag.mission_id == Mission.id
+        Checkpoint, Checkpoint.mission_id == Mission.id
+    ).join(
+        NFCTag, NFCTag.checkpoint_id == Checkpoint.id
     ).join(
         Attendance, Attendance.nfc_tag_id == NFCTag.id
     ).filter(

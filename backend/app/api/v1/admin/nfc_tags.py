@@ -46,6 +46,21 @@ async def get_nfc_tag(
     return nfc_tag
 
 
+@router.get("/checkpoint/{checkpoint_id}", response_model=List[NFCTagResponse])
+async def get_nfc_tags_by_checkpoint(
+    checkpoint_id: int,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """取得檢查點的所有 NFC 標籤"""
+    nfc_tags, total = crud_nfc_tag.get_nfc_tags_by_checkpoint(
+        db, checkpoint_id, skip, limit
+    )
+    return nfc_tags
+
+
 @router.get("/mission/{mission_id}", response_model=List[NFCTagResponse])
 async def get_nfc_tags_by_mission(
     mission_id: int,
@@ -54,7 +69,7 @@ async def get_nfc_tags_by_mission(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """取得任務的所有 NFC 標籤"""
+    """取得任務的所有 NFC 標籤(透過 checkpoint)"""
     nfc_tags, total = crud_nfc_tag.get_nfc_tags_by_mission(
         db, mission_id, skip, limit
     )

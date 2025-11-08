@@ -19,6 +19,5 @@ class Mission(Base):
 
     # Relationships
     event = relationship("Event", back_populates="missions")
-    nfc_tag = relationship("NFCTag", back_populates="mission", uselist=False, cascade="all, delete-orphan")
     checkpoints = relationship("Checkpoint", back_populates="mission", cascade="all, delete-orphan")
 

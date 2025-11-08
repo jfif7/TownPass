@@ -96,32 +96,45 @@ async def get_event_detail(
         Mission.event_id == event_id
     ).order_by(Mission.order).all()
     
-    # 取得使用者完成的 missions
-    completed_mission_ids = db.query(Attendance.nfc_tag_id).join(
-        Mission, Mission.id == Attendance.nfc_tag_id
-    ).filter(
-        Attendance.user_id == current_user.id,
-        Mission.event_id == event_id
-    ).distinct().all()
-    
-    completed_ids = {row[0] for row in completed_mission_ids}
+    # 取得使用者在此活動的所有 checkpoint 完成記錄
+    from app.models.checkpoint import Checkpoint
+    from app.models.user_checkpoint_progress import UserCheckpointProgress
     
     mission_responses = []
     for mission in missions:
-        # 檢查是否完成（需要通過 nfc_tag 關聯）
-        from app.models.nfc_tag import NFCTag
-        nfc_tag = db.query(NFCTag).filter(NFCTag.mission_id == mission.id).first()
-        is_completed = nfc_tag and nfc_tag.id in completed_ids if nfc_tag else False
+        # 取得該任務的所有 checkpoints
+        checkpoints = db.query(Checkpoint).filter(
+            Checkpoint.mission_id == mission.id,
+            Checkpoint.is_active == True
+        ).all()
         
-        # 取得完成時間
+        if not checkpoints:
+            # 如果沒有 checkpoints,視為未完成
+            mission_responses.append(MissionResponse(
+                id=mission.id,
+                name=mission.name,
+                description=mission.description,
+                order=mission.order,
+                is_completed=False,
+                completed_at=None
+            ))
+            continue
+        
+        # 取得使用者在這些 checkpoints 的完成狀態
+        checkpoint_ids = [cp.id for cp in checkpoints]
+        completed_checkpoints = db.query(UserCheckpointProgress).filter(
+            UserCheckpointProgress.user_id == current_user.id,
+            UserCheckpointProgress.checkpoint_id.in_(checkpoint_ids),
+            UserCheckpointProgress.completed == True
+        ).all()
+        
+        # Mission 完成 = 所有 checkpoint 都完成
+        is_completed = len(completed_checkpoints) == len(checkpoints)
+        
+        # 取得最後完成的時間（如果全部完成，取最晚的完成時間）
         completed_at = None
-        if is_completed and nfc_tag:
-            attendance = db.query(Attendance).filter(
-                Attendance.user_id == current_user.id,
-                Attendance.nfc_tag_id == nfc_tag.id
-            ).first()
-            if attendance:
-                completed_at = attendance.timestamp
+        if is_completed and completed_checkpoints:
+            completed_at = max(cp.completed_at for cp in completed_checkpoints if cp.completed_at)
         
         mission_responses.append(MissionResponse(
             id=mission.id,

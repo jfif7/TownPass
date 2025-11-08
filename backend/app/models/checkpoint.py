@@ -26,7 +26,7 @@ class Checkpoint(Base):
     lng = Column(Float, nullable=True)  # 經度
     
     # 關聯資料 (根據 checkpoint_type 使用不同的欄位)
-    nfc_tag_id = Column(Integer, ForeignKey("nfc_tags.id", ondelete="SET NULL"), nullable=True, index=True)
+    # nfc_tag 透過 relationship 關聯,不需要 nfc_tag_id 欄位
     question_data = Column(Text, nullable=True)  # JSON 格式儲存問題相關資料
     qrcode_data = Column(String(255), nullable=True)  # QR Code 的內容或識別碼
     
@@ -43,5 +43,5 @@ class Checkpoint(Base):
 
     # Relationships
     mission = relationship("Mission", back_populates="checkpoints")
-    nfc_tag = relationship("NFCTag", foreign_keys=[nfc_tag_id])
+    nfc_tag = relationship("NFCTag", back_populates="checkpoint", uselist=False, cascade="all, delete-orphan")
     # 可以添加 user_checkpoint_progress 關聯來追蹤用戶完成狀態

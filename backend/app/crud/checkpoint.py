@@ -93,8 +93,14 @@ def hard_delete_checkpoint(db: Session, checkpoint_id: int) -> bool:
 
 def get_checkpoint_by_nfc_tag(db: Session, nfc_tag_id: int) -> Checkpoint | None:
     """根據 NFC tag ID 取得檢查點"""
+    from app.models.nfc_tag import NFCTag
+    
+    nfc_tag = db.query(NFCTag).filter(NFCTag.id == nfc_tag_id).first()
+    if not nfc_tag:
+        return None
+    
     return db.query(Checkpoint).filter(
-        Checkpoint.nfc_tag_id == nfc_tag_id,
+        Checkpoint.id == nfc_tag.checkpoint_id,
         Checkpoint.is_active == True
     ).first()
 

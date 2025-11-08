@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import List
 from app.models.nfc_tag import NFCTag
+from app.models.checkpoint import Checkpoint
 from app.models.mission import Mission
 from app.models.event import Event
 
@@ -10,13 +11,17 @@ def get_nfc_tag_by_uid(db: Session, tag_uid: str) -> NFCTag | None:
     return db.query(NFCTag).filter(NFCTag.tag_uid == tag_uid).first()
 
 
-def get_nfc_tag_with_mission(db: Session, tag_uid: str) -> tuple[NFCTag, Mission, Event] | None:
-    """取得 NFC 標籤及其關聯的 mission 和 event"""
+def get_nfc_tag_with_checkpoint(db: Session, tag_uid: str) -> tuple[NFCTag, Checkpoint, Mission, Event] | None:
+    """取得 NFC 標籤及其關聯的 checkpoint, mission 和 event"""
     nfc_tag = db.query(NFCTag).filter(NFCTag.tag_uid == tag_uid).first()
     if not nfc_tag:
         return None
     
-    mission = db.query(Mission).filter(Mission.id == nfc_tag.mission_id).first()
+    checkpoint = db.query(Checkpoint).filter(Checkpoint.id == nfc_tag.checkpoint_id).first()
+    if not checkpoint:
+        return None
+    
+    mission = db.query(Mission).filter(Mission.id == checkpoint.mission_id).first()
     if not mission:
         return None
     
@@ -24,12 +29,30 @@ def get_nfc_tag_with_mission(db: Session, tag_uid: str) -> tuple[NFCTag, Mission
     if not event:
         return None
     
-    return nfc_tag, mission, event
+    return nfc_tag, checkpoint, mission, event
 
 
 def get_nfc_tag_by_id(db: Session, nfc_tag_id: int) -> NFCTag | None:
     """根據 id 取得 NFC 標籤"""
     return db.query(NFCTag).filter(NFCTag.id == nfc_tag_id).first()
+
+
+def get_nfc_tags_by_checkpoint(
+    db: Session,
+    checkpoint_id: int,
+    skip: int = 0,
+    limit: int = 100
+) -> tuple[List[NFCTag], int]:
+    """取得檢查點的所有 NFC 標籤"""
+    query = db.query(NFCTag).filter(
+        NFCTag.checkpoint_id == checkpoint_id,
+        NFCTag.is_active == True
+    )
+    
+    total = query.count()
+    nfc_tags = query.offset(skip).limit(limit).all()
+    
+    return nfc_tags, total
 
 
 def get_nfc_tags_by_mission(
@@ -38,9 +61,11 @@ def get_nfc_tags_by_mission(
     skip: int = 0,
     limit: int = 100
 ) -> tuple[List[NFCTag], int]:
-    """取得任務的所有 NFC 標籤"""
-    query = db.query(NFCTag).filter(
-        NFCTag.mission_id == mission_id,
+    """取得任務的所有 NFC 標籤(透過 checkpoint)"""
+    query = db.query(NFCTag).join(
+        Checkpoint, Checkpoint.id == NFCTag.checkpoint_id
+    ).filter(
+        Checkpoint.mission_id == mission_id,
         NFCTag.is_active == True
     )
     

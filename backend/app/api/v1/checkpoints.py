@@ -43,6 +43,7 @@ async def get_mission_checkpoints(
     user_progress_list = user_checkpoint_progress.get_user_progress_for_mission(
         db=db, user_id=current_user.id, mission_id=mission_id
     )
+    print(current_user.id, mission_id, user_progress_list)
     
     # 建立進度查詢字典
     progress_map = {progress.checkpoint_id: progress for progress in user_progress_list}

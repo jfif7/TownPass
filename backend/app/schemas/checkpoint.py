@@ -23,7 +23,6 @@ class CheckpointBase(BaseModel):
 
 class CheckpointCreate(CheckpointBase):
     mission_id: int
-    nfc_tag_id: Optional[int] = None
     question_data: Optional[str] = None  # JSON string
     qrcode_data: Optional[str] = None
 
@@ -34,7 +33,6 @@ class CheckpointUpdate(BaseModel):
     checkpoint_type: Optional[CheckpointType] = None
     lat: Optional[float] = None
     lng: Optional[float] = None
-    nfc_tag_id: Optional[int] = None
     question_data: Optional[str] = None
     qrcode_data: Optional[str] = None
     order: Optional[int] = None
@@ -45,7 +43,6 @@ class CheckpointUpdate(BaseModel):
 class CheckpointResponse(CheckpointBase):
     id: int
     mission_id: int
-    nfc_tag_id: Optional[int] = None
     question_data: Optional[str] = None
     qrcode_data: Optional[str] = None
     created_at: datetime

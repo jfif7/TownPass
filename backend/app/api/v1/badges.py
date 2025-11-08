@@ -70,6 +70,7 @@ async def get_all_badges(
     
     for badge in badges:
         is_earned = crud_badge.check_user_has_badge(db, current_user.id, badge.id)
+        print(badge.id, is_earned)
         if is_earned:
             earned_count += 1
         

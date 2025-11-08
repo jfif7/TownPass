@@ -59,14 +59,14 @@ class UserBadgeCreate(BaseModel):
 
 class NFCTagCreate(BaseModel):
     tag_uid: str
-    mission_id: int
+    checkpoint_id: int
     reward_points: int = 0
     is_active: bool = True
 
 
 class NFCTagUpdate(BaseModel):
     tag_uid: Optional[str] = None
-    mission_id: Optional[int] = None
+    checkpoint_id: Optional[int] = None
     reward_points: Optional[int] = None
     is_active: Optional[bool] = None
 
@@ -74,7 +74,7 @@ class NFCTagUpdate(BaseModel):
 class NFCTagResponse(BaseModel):
     id: int
     tag_uid: str
-    mission_id: int
+    checkpoint_id: int
     reward_points: int
     is_active: bool
     created_at: datetime

@@ -5,6 +5,7 @@ import 'package:town_pass/gen/assets.gen.dart';
 import 'package:town_pass/service/account_service.dart';
 import 'package:town_pass/service/device_service.dart';
 import 'package:town_pass/service/geo_locator_service.dart';
+import 'package:town_pass/service/nfc_services.dart';
 import 'package:town_pass/service/notification_service.dart';
 import 'package:town_pass/service/package_service.dart';
 import 'package:town_pass/service/shared_preferences_service.dart';
@@ -36,6 +37,7 @@ Future<void> initServices() async {
   await Get.putAsync<SharedPreferencesService>(() async => await SharedPreferencesService().init());
   await Get.putAsync<GeoLocatorService>(() async => await GeoLocatorService().init());
   await Get.putAsync<NotificationService>(() async => await NotificationService().init());
+  await Get.putAsync<NfcService>(() async => await NfcService().init());
 
   Get.put<SubscriptionService>(SubscriptionService());
 }

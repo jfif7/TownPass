@@ -1,0 +1,168 @@
+{
+  "common": {
+    "appName": "TownPass",
+    "appDescription": "GPS Adventure Game",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close"
+  },
+  "home": {
+    "title": "TownPass",
+    "subtitle": "GPS Adventure Game",
+    "tabs": {
+      "available": "Available",
+      "active": "Active",
+      "completed": "Completed"
+    }
+  },
+  "event": {
+    "details": "Event Details",
+    "aboutEvent": "About This Event",
+    "yourProgress": "Your Progress",
+    "missionsCompleted": "{completed} of {total} missions completed",
+    "missionsList": "Missions",
+    "startAdventure": "Start Adventure",
+    "continue": "Continue",
+    "viewBadges": "View Badges",
+    "startMission": "Start Mission",
+    "completed": "Completed",
+    "points": "points",
+    "missions": "{count} {count, plural, =1 {mission} other {missions}}",
+    "badges": "{count} {count, plural, =1 {badge} other {badges}}",
+    "progress": "Progress",
+    "loading": "Loading...",
+    "notFound": "Event not found",
+    "detailTitle": "Event Details",
+    "about": "About This Event",
+    "missionsTitle": "Missions"
+  },
+  "mission": {
+    "details": "Mission Details",
+    "progress": "Progress",
+    "checkpoints": "Checkpoints",
+    "checkpointsCount": "{completed}/{total} checkpoints",
+    "done": "Done",
+    "navigateHere": "Navigate Here",
+    "complete": "Mission Complete!",
+    "allCheckpointsCompleted": "You've completed all checkpoints",
+    "claimBadge": "Claim Your Badge"
+  },
+  "navigation": {
+    "title": "Navigation",
+    "locationError": "Unable to access your location. Please enable location services to use navigation.",
+    "distance": {
+      "near": "Very Close (~40m or less)",
+      "mid": "Getting Closer (40-200m)",
+      "far": "Keep Going (200m+)"
+    },
+    "arrived": "You've Arrived!",
+    "scanOrManual": "Scan the NFC tag at this location or use manual check-in",
+    "scanNFC": "Scan NFC Tag",
+    "manualCheckIn": "Manual Check-in",
+    "tips": "Navigation Tips",
+    "tip1": "Follow the arrow direction and watch the footsteps decrease",
+    "tip2": "The arrow points toward your destination",
+    "tip3": "Scan the NFC tag when you arrive to complete the checkpoint"
+  },
+  "complete": {
+    "congratulations": "Congratulations!",
+    "missionComplete": "You completed the mission!",
+    "badgeEarned": "Mission Badge Earned",
+    "claimPrize": "Claim Your Prize",
+    "showQR": "Show this QR code or use the link below to claim your reward",
+    "openPrizeLink": "Open Prize Link",
+    "shareAchievement": "Share Achievement",
+    "backToEvent": "Back to Event",
+    "goToHome": "Go to Home",
+    "shareTitle": "I completed {mission}!",
+    "shareText": "Check out my achievement in TownPass!"
+  },
+  "badges": {
+    "title": "Badge Collection",
+    "completedOn": "Completed on {date}",
+    "yourBadges": "Your Badges",
+    "trophy": "Completion Trophy",
+    "trophyDescription": "All badges collected form this special trophy!",
+    "backToHome": "Back to Home"
+  },
+  "mockData": {
+    "events": {
+      "downtown": {
+        "title": "Downtown Discovery",
+        "description": "Explore the historic downtown area and discover hidden gems",
+        "location": "Downtown District"
+      },
+      "coastal": {
+        "title": "Coastal Adventure",
+        "description": "Journey along the beautiful coastline and coastal landmarks",
+        "location": "Coastal Area"
+      },
+      "park": {
+        "title": "Park Explorer",
+        "description": "Navigate through city parks and natural trails",
+        "location": "City Parks"
+      },
+      "museum": {
+        "title": "Museum Quest",
+        "description": "Visit famous museums and cultural sites",
+        "location": "Museum District"
+      }
+    },
+    "missions": {
+      "historicPlaza": {
+        "title": "Historic Plaza",
+        "description": "Find the historic plaza and learn about its significance"
+      },
+      "clockTower": {
+        "title": "Old Clock Tower",
+        "description": "Navigate to the iconic clock tower"
+      },
+      "marketSquare": {
+        "title": "Market Square",
+        "description": "Explore the bustling market square"
+      },
+      "riversideWalk": {
+        "title": "Riverside Walk",
+        "description": "Follow the scenic riverside path"
+      },
+      "artDistrict": {
+        "title": "Art District",
+        "description": "Discover the vibrant art district"
+      }
+    },
+    "checkpoints": {
+      "mainEntrance": {
+        "name": "Main Entrance",
+        "description": "Find the main entrance gate"
+      },
+      "fountainPlaza": {
+        "name": "Fountain Plaza",
+        "description": "Locate the central fountain"
+      },
+      "foodCourt": {
+        "name": "Food Court",
+        "description": "Visit the local food court area"
+      },
+      "artisanCorner": {
+        "name": "Artisan Corner",
+        "description": "Find the artisan crafts corner"
+      }
+    },
+    "badgeNames": {
+      "ancientHistory": "Ancient History",
+      "modernArt": "Modern Art",
+      "naturalScience": "Natural Science",
+      "culturalHeritage": "Cultural Heritage",
+      "architecture": "Architecture",
+      "photography": "Photography"
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "common": {
+    "appName": "タウンパス",
+    "appDescription": "GPS アドベンチャーゲーム",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "back": "戻る",
+    "next": "次へ",
+    "close": "閉じる"
+  },
+  "home": {
+    "title": "タウンパス",
+    "subtitle": "GPS アドベンチャーゲーム",
+    "tabs": {
+      "available": "参加可能",
+      "active": "進行中",
+      "completed": "完了"
+    }
+  },
+  "event": {
+    "details": "イベント詳細",
+    "aboutEvent": "このイベントについて",
+    "yourProgress": "あなたの進捗",
+    "missionsCompleted": "{total} ミッション中 {completed} 完了",
+    "missionsList": "ミッション一覧",
+    "startAdventure": "アドベンチャー開始",
+    "continue": "続ける",
+    "viewBadges": "バッジを表示",
+    "startMission": "ミッション開始",
+    "completed": "完了",
+    "points": "ポイント",
+    "missions": "{count} ミッション",
+    "badges": "{count} バッジ",
+    "progress": "進捗",
+    "loading": "読み込み中...",
+    "notFound": "イベントが見つかりません",
+    "detailTitle": "イベント詳細",
+    "about": "このイベントについて",
+    "missionsTitle": "ミッション"
+  },
+  "mission": {
+    "details": "ミッション詳細",
+    "progress": "進捗",
+    "checkpoints": "チェックポイント",
+    "checkpointsCount": "{completed}/{total} チェックポイント",
+    "done": "完了",
+    "navigateHere": "ナビゲーション開始",
+    "complete": "ミッション完了！",
+    "allCheckpointsCompleted": "すべてのチェックポイントを完了しました",
+    "claimBadge": "バッジを獲得"
+  },
+  "navigation": {
+    "title": "ナビゲーション",
+    "locationError": "位置情報にアクセスできません。ナビゲーション機能を使用するには、位置情報サービスを有効にしてください。",
+    "distance": {
+      "near": "非常に近い（約40m以内）",
+      "mid": "近づいています（40-200m）",
+      "far": "進み続けてください（200m以上）"
+    },
+    "arrived": "到着しました！",
+    "scanOrManual": "この場所のNFCタグをスキャンするか、手動チェックインを使用してください",
+    "scanNFC": "NFCタグをスキャン",
+    "manualCheckIn": "手動チェックイン",
+    "tips": "ナビゲーションのヒント",
+    "tip1": "矢印の方向に従い、足跡が減るのを見てください",
+    "tip2": "矢印は目的地を指しています",
+    "tip3": "到着したらNFCタグをスキャンしてチェックポイントを完了してください"
+  },
+  "complete": {
+    "congratulations": "おめでとうございます！",
+    "missionComplete": "ミッションを完了しました！",
+    "badgeEarned": "ミッションバッジを獲得",
+    "claimPrize": "賞品を受け取る",
+    "showQR": "このQRコードを表示するか、下のリンクを使用して報酬を受け取ってください",
+    "openPrizeLink": "賞品リンクを開く",
+    "shareAchievement": "成果を共有",
+    "backToEvent": "イベントに戻る",
+    "goToHome": "ホームに戻る",
+    "shareTitle": "{mission}を完了しました！",
+    "shareText": "TownPassでの私の成果をチェックしてください！"
+  },
+  "badges": {
+    "title": "バッジコレクション",
+    "completedOn": "{date}に完了",
+    "yourBadges": "あなたのバッジ",
+    "trophy": "完了トロフィー",
+    "trophyDescription": "すべてのバッジが集まってこの特別なトロフィーを形成します！",
+    "backToHome": "ホームに戻る"
+  },
+  "mockData": {
+    "events": {
+      "downtown": {
+        "title": "ダウンタウン探索",
+        "description": "歴史あるダウンタウンエリアを探索し、隠された宝石を発見",
+        "location": "ダウンタウン地区"
+      },
+      "coastal": {
+        "title": "海岸線アドベンチャー",
+        "description": "美しい海岸線と海岸のランドマークを巡る旅",
+        "location": "海岸エリア"
+      },
+      "park": {
+        "title": "公園探検家",
+        "description": "都市公園と自然の小道を巡る",
+        "location": "都市公園"
+      },
+      "museum": {
+        "title": "博物館クエスト",
+        "description": "有名な博物館や文化施設を訪問",
+        "location": "博物館地区"
+      }
+    },
+    "missions": {
+      "historicPlaza": {
+        "title": "歴史的広場",
+        "description": "歴史的広場を見つけ、その重要性を学ぶ"
+      },
+      "clockTower": {
+        "title": "古い時計塔",
+        "description": "象徴的な時計塔へナビゲート"
+      },
+      "marketSquare": {
+        "title": "マーケット広場",
+        "description": "賑やかなマーケット広場を探索"
+      },
+      "riversideWalk": {
+        "title": "川沿いの散歩道",
+        "description": "風光明媚な川沿いの小道を辿る"
+      },
+      "artDistrict": {
+        "title": "アート地区",
+        "description": "活気あるアート地区を発見"
+      }
+    },
+    "checkpoints": {
+      "mainEntrance": {
+        "name": "メインエントランス",
+        "description": "正門を見つける"
+      },
+      "fountainPlaza": {
+        "name": "噴水広場",
+        "description": "中央の噴水を見つける"
+      },
+      "foodCourt": {
+        "name": "フードコート",
+        "description": "地元のフードコートエリアを訪問"
+      },
+      "artisanCorner": {
+        "name": "職人コーナー",
+        "description": "職人の工芸品コーナーを見つける"
+      }
+    },
+    "badgeNames": {
+      "ancientHistory": "古代史",
+      "modernArt": "現代美術",
+      "naturalScience": "自然科学",
+      "culturalHeritage": "文化遺産",
+      "architecture": "建築",
+      "photography": "写真"
+    }
+  }
+}

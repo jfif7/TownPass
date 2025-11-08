@@ -89,3 +89,18 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Backend Python specific (補充)
+backend/__pycache__/
+backend/*.pyc
+backend/.venv/
+backend/venv/
+backend/.env
+backend/.env.local
+backend/postgres_data/
+backend/*.log
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.coverage
+backend/htmlcov/
+backend/.DS_Store

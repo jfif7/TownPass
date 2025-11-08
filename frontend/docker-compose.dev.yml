@@ -1,0 +1,36 @@
+services:
+  # Next.js Development Server (with hot reload)
+  frontend:
+    image: node:20-alpine
+    container_name: townpass-frontend
+    working_dir: /app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - NEXT_DEV=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    command: sh -c "corepack enable pnpm && pnpm install && pnpm dev"
+    networks:
+      - townpass-network
+
+  # Cloudflare Tunnel
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: townpass-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    networks:
+      - townpass-network
+    depends_on:
+      - frontend
+
+networks:
+  townpass-network:
+    driver: bridge

@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,66 +9,72 @@ import { ArrowLeft, MapPin, Award, CheckCircle2, Circle } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import Link from "next/link"
 
-// Mock data
-const mockEventDetails = {
-  id: "1",
-  title: "Downtown Discovery",
-  description:
-    "Embark on an exciting journey through the historic downtown area. Discover hidden gems, learn about local history, and collect badges as you complete each mission.",
-  location: "Downtown District",
-  imageUrl: "/downtown-cityscape.jpg",
-  missions: [
-    {
-      id: "m1",
-      title: "Historic Plaza",
-      description: "Find the historic plaza and learn about its significance",
-      points: 3,
-      completed: true,
-      badgeUrl: "/plaza-badge.jpg",
-    },
-    {
-      id: "m2",
-      title: "Old Clock Tower",
-      description: "Navigate to the iconic clock tower",
-      points: 4,
-      completed: true,
-      badgeUrl: "/clock-badge.jpg",
-    },
-    {
-      id: "m3",
-      title: "Market Square",
-      description: "Explore the bustling market square",
-      points: 3,
-      completed: false,
-      badgeUrl: "/market-badge.jpg",
-    },
-    {
-      id: "m4",
-      title: "Riverside Walk",
-      description: "Follow the scenic riverside path",
-      points: 5,
-      completed: false,
-      badgeUrl: "/river-badge.jpg",
-    },
-    {
-      id: "m5",
-      title: "Art District",
-      description: "Discover the vibrant art district",
-      points: 4,
-      completed: false,
-      badgeUrl: "/art-badge.png",
-    },
-  ],
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export default function EventDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const event = mockEventDetails
+  const [event, setEvent] = useState<any | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const completedMissions = event.missions.filter((m) => m.completed).length
-  const totalMissions = event.missions.length
-  const progress = (completedMissions / totalMissions) * 100
+  useEffect(() => {
+    async function fetchEvent() {
+      setLoading(true)
+      try {
+        // 取得單一 event 詳細
+        const res = await fetch(`${API_URL}events/${params.id}`, {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+          },
+        })
+        const data = await res.json()
+        console.log('Fetched event detail:', data)
+        // 後端可能回 { event: {...} } 或直接回 {...}
+        const raw = data?.event ?? data
+        if (!raw) throw new Error('No event data')
+
+        // 映射為前端使用的結構
+        const mapped = {
+          id: String(raw.id),
+          title: raw.title,
+          description: raw.description,
+          location: raw.location,
+          imageUrl: raw.cover_image_url || '/placeholder.svg',
+          missions: (raw.missions || []).map((m: any) => ({
+            id: String(m.id),
+            title: m.name,
+            description: m.description,
+            // 後端目前沒有 points/badge，必要時可日後擴充
+            points: typeof m.points === 'number' ? m.points : undefined,
+            completed: !!m.is_completed,
+          })),
+          my_progress: raw.my_progress,
+          status: raw.status,
+        }
+
+        setEvent(mapped)
+      } catch (e) {
+        setEvent(null)
+      }
+      setLoading(false)
+    }
+    fetchEvent()
+  }, [params.id])
+
+  if (loading) {
+    return <div className="p-8 text-center">載入中...</div>
+  }
+
+  if (!event) {
+    return <div className="p-8 text-center text-red-500">找不到活動資料</div>
+  }
+
+  // 使用後端提供的 my_progress，若無則回退以任務完成數計算
+  const completedMissions = event.my_progress?.missions_completed ?? (event.missions?.filter((m: any) => m.completed).length || 0)
+  const totalMissions = event.my_progress?.total_missions ?? (event.missions?.length || 0)
+  const progress = typeof event.my_progress?.completion_percentage === 'number'
+    ? event.my_progress.completion_percentage
+    : (totalMissions ? (completedMissions / totalMissions) * 100 : 0)
 
   return (
     <div className="min-h-screen bg-background">
@@ -133,7 +140,7 @@ export default function EventDetailPage() {
             Missions
           </h3>
 
-          {event.missions.map((mission) => (
+          {event.missions?.map((mission: any) => (
             <Card key={mission.id} className={mission.completed ? "opacity-75 border-primary/30" : "border-primary"}>
               <CardContent className="p-4">
                 <div className="flex items-start gap-4">
@@ -147,7 +154,9 @@ export default function EventDetailPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-3 mb-2">
                       <h4 className="font-semibold text-balance">{mission.title}</h4>
-                      <Badge variant={mission.completed ? "secondary" : "default"}>{mission.points} points</Badge>
+                      {typeof mission.points === 'number' && (
+                        <Badge variant={mission.completed ? "secondary" : "default"}>{mission.points} points</Badge>
+                      )}
                     </div>
                     <p className="text-sm text-muted-foreground mb-3">{mission.description}</p>
                     {!mission.completed && (

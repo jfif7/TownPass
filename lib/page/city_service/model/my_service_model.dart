@@ -29,6 +29,7 @@ enum MyServiceItemId {
   library,
   locationSearch,
   zoo,
+  treasureHunt,
   ;
 }
 
@@ -182,6 +183,13 @@ extension MyServiceIdExt on MyServiceItemId {
           icon: Assets.svg.iconZoo24.svg(),
           category: MyServiceCategory.explore,
           destinationUrl: '',
+        ),
+      MyServiceItemId.treasureHunt => MyServiceItem(
+          title: '尋寶趣',
+          description: '臺北市定點尋寶活動',
+          icon: Assets.svg.iconTreasureHunt.svg(),
+          category: MyServiceCategory.explore,
+          destinationUrl: 'https://codefest.onino.tw/',
         ),
     };
   }

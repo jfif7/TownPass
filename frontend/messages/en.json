@@ -78,14 +78,20 @@
   "navigation": {
     "title": "Navigation",
     "locationError": "Unable to access your location. Please enable location services to use navigation.",
+    "nfcError": "This NFC tag doesn't match this checkpoint. Please scan the correct NFC tag at this location.",
     "distance": {
       "near": "Very Close (~40m or less)",
       "mid": "Getting Closer (40-200m)",
       "far": "Keep Going (200m+)"
     },
     "arrived": "You've Arrived!",
+    "completed": "Checkpoint Completed!",
     "scanOrManual": "Scan the NFC tag at this location or use manual check-in",
     "scanNFC": "Scan NFC Tag",
+    "processing": "Processing...",
+    "processingNFC": "Processing NFC tag...",
+    "checkpointCompleted": "Checkpoint completed successfully!",
+    "redirecting": "Redirecting to next step...",
     "manualCheckIn": "Manual Check-in",
     "tips": "Navigation Tips",
     "tip1": "Follow the arrow direction and watch the footsteps decrease",

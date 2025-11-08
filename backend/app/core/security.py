@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from typing import Optional
+import hashlib
 
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
@@ -13,21 +14,37 @@ from sqlalchemy.orm import Session
 
 settings = get_settings()
 
-# 密碼雜湊上下文
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 # OAuth2 設定
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 
+def _preprocess_password(password: str) -> bytes:
+    """
+    預處理密碼以處理 bcrypt 的 72 字節限制
+    使用 SHA-256 hash，返回 32 字節的 bytes（遠小於 72 字節限制）
+    """
+    return hashlib.sha256(password.encode('utf-8')).digest()
+
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """驗證密碼"""
-    return pwd_context.verify(plain_password, hashed_password)
+    # 先對明文密碼進行 SHA-256 hash，然後用 bcrypt 驗證
+    preprocessed = _preprocess_password(plain_password)
+    # hashed_password 是字符串，需要轉換為 bytes
+    return bcrypt.checkpw(preprocessed, hashed_password.encode('utf-8'))
 
 
 def get_password_hash(password: str) -> str:
-    """產生密碼雜湊"""
-    return pwd_context.hash(password)
+    """
+    產生密碼雜湊
+    先使用 SHA-256 hash 處理長密碼問題，然後再用 bcrypt
+    SHA-256 輸出 32 字節，遠小於 bcrypt 的 72 字節限制
+    """
+    # 先對密碼進行 SHA-256 hash，確保長度不超過 72 字節
+    preprocessed = _preprocess_password(password)
+    # 使用 bcrypt 生成 hash，然後轉換為字符串
+    hashed = bcrypt.hashpw(preprocessed, bcrypt.gensalt())
+    return hashed.decode('utf-8')
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

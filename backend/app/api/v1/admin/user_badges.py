@@ -11,6 +11,20 @@ from app.schemas.badge import UserBadgeCreate, UserBadgeResponse
 router = APIRouter()
 
 
+def user_badge_to_response(user_badge) -> UserBadgeResponse:
+    """將 UserBadge 模型轉換為 UserBadgeResponse"""
+    return UserBadgeResponse(
+        id=user_badge.badge.id,
+        name=user_badge.badge.name,
+        description=user_badge.badge.description,
+        image_url=user_badge.badge.image_url,
+        badge_type=user_badge.badge.badge_type,
+        timestamp_earned=user_badge.timestamp_earned,
+        event_id=user_badge.event_id,
+        event_title=user_badge.event.title if user_badge.event else None
+    )
+
+
 @router.post("", response_model=UserBadgeResponse, status_code=status.HTTP_201_CREATED)
 async def create_user_badge(
     user_badge_data: UserBadgeCreate,
@@ -22,7 +36,9 @@ async def create_user_badge(
         db,
         user_badge_data.model_dump()
     )
-    return user_badge
+    
+    # 轉換為響應格式
+    return user_badge_to_response(user_badge)
 
 
 @router.get("", response_model=List[UserBadgeResponse])
@@ -44,23 +60,7 @@ async def get_user_badges(
     )
     
     # 轉換為響應格式
-    from app.models.user_badge import UserBadge
-    from app.schemas.badge import UserBadgeResponse
-    
-    responses = []
-    for ub in user_badges:
-        responses.append(UserBadgeResponse(
-            id=ub.badge.id,
-            name=ub.badge.name,
-            description=ub.badge.description,
-            image_url=ub.badge.image_url,
-            badge_type=ub.badge.badge_type,
-            timestamp_earned=ub.timestamp_earned,
-            event_id=ub.event_id,
-            event_title=ub.event.title if ub.event else None
-        ))
-    
-    return responses
+    return [user_badge_to_response(ub) for ub in user_badges]
 
 
 @router.get("/{user_badge_id}", response_model=UserBadgeResponse)
@@ -77,17 +77,7 @@ async def get_user_badge(
             detail="使用者徽章不存在"
         )
     
-    from app.schemas.badge import UserBadgeResponse
-    return UserBadgeResponse(
-        id=user_badge.badge.id,
-        name=user_badge.badge.name,
-        description=user_badge.badge.description,
-        image_url=user_badge.badge.image_url,
-        badge_type=user_badge.badge.badge_type,
-        timestamp_earned=user_badge.timestamp_earned,
-        event_id=user_badge.event_id,
-        event_title=user_badge.event.title if user_badge.event else None
-    )
+    return user_badge_to_response(user_badge)
 
 
 @router.delete("/{user_badge_id}", status_code=status.HTTP_204_NO_CONTENT)

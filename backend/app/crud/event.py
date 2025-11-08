@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List
 from app.models.event import Event
 from app.models.attendance import Attendance
@@ -27,7 +27,7 @@ def get_events(
         )
     
     # 狀態過濾
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     if status == "upcoming":
         query = query.filter(Event.start_time > now)
     elif status == "ongoing":

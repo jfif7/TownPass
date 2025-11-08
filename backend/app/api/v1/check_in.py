@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -29,7 +29,7 @@ async def check_in(
     nfc_tag, mission, event = result
     
     # 2. 檢查活動狀態
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     if event.start_time > now:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

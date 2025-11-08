@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.core.database import get_db
 from app.core.security import get_current_user
@@ -17,7 +17,7 @@ router = APIRouter()
 
 def get_event_status(event) -> str:
     """取得活動狀態"""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     if event.start_time > now:
         return "upcoming"
     elif event.end_time < now:

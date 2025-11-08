@@ -1,11 +1,14 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 from app.models.user_badge import UserBadge
 
 
 def get_user_badge_by_id(db: Session, user_badge_id: int) -> UserBadge | None:
     """根據 id 取得使用者徽章"""
-    return db.query(UserBadge).filter(UserBadge.id == user_badge_id).first()
+    return db.query(UserBadge).options(
+        joinedload(UserBadge.badge),
+        joinedload(UserBadge.event)
+    ).filter(UserBadge.id == user_badge_id).first()
 
 
 def get_user_badges_by_user(
@@ -17,7 +20,10 @@ def get_user_badges_by_user(
     limit: int = 100
 ) -> tuple[List[UserBadge], int]:
     """取得使用者的徽章列表"""
-    query = db.query(UserBadge).filter(UserBadge.user_id == user_id)
+    query = db.query(UserBadge).options(
+        joinedload(UserBadge.badge),
+        joinedload(UserBadge.event)
+    ).filter(UserBadge.user_id == user_id)
     
     if event_id:
         query = query.filter(UserBadge.event_id == event_id)
@@ -34,7 +40,10 @@ def get_user_badges_by_user(
 def create_user_badge(db: Session, user_badge_data: dict) -> UserBadge:
     """創建使用者徽章"""
     # 檢查是否已存在
-    existing = db.query(UserBadge).filter(
+    existing = db.query(UserBadge).options(
+        joinedload(UserBadge.badge),
+        joinedload(UserBadge.event)
+    ).filter(
         UserBadge.user_id == user_badge_data["user_id"],
         UserBadge.badge_id == user_badge_data["badge_id"]
     ).first()
@@ -46,6 +55,13 @@ def create_user_badge(db: Session, user_badge_data: dict) -> UserBadge:
     db.add(db_user_badge)
     db.commit()
     db.refresh(db_user_badge)
+    
+    # 重新載入關聯資料
+    db_user_badge = db.query(UserBadge).options(
+        joinedload(UserBadge.badge),
+        joinedload(UserBadge.event)
+    ).filter(UserBadge.id == db_user_badge.id).first()
+    
     return db_user_badge
 
 

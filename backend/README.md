@@ -4,8 +4,11 @@
 
 ## 📚 文件
 
+- **[使用流程指南](./USER_GUIDE.md)** - 完整的使用流程，包含使用者註冊、管理員建立活動系統等
 - **[API 詳細規格與實作注意事項](./API_SPEC.md)** - 完整的 API 規格、資料庫設計、安全考量等詳細文件
 - **[資料庫設置指南](./DATABASE_SETUP.md)** - 如何使用 Docker 啟動 PostgreSQL 並設置資料庫
+- **[CRUD API 文檔](./CRUD_API.md)** - 管理員 CRUD API 完整文檔
+- **[API Endpoints 總覽](./API_ENDPOINTS.md)** - 所有 API 端點的快速參考
 
 ## 需求
 - Python 3.10 或以上（建議 3.11+）

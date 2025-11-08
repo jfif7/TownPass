@@ -4,80 +4,192 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated theme for adventure game with rich blue and vibrant orange accent */
-  --background: oklch(0.98 0.005 260);
-  --foreground: oklch(0.15 0.01 260);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.01 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.01 260);
-  --primary: oklch(0.4 0.15 260);
-  --primary-foreground: oklch(0.98 0.005 260);
-  --secondary: oklch(0.88 0.01 260);
-  --secondary-foreground: oklch(0.15 0.01 260);
-  --muted: oklch(0.92 0.01 260);
-  --muted-foreground: oklch(0.5 0.02 260);
-  --accent: oklch(0.65 0.18 40);
-  --accent-foreground: oklch(0.98 0.005 260);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.98 0.005 260);
-  --border: oklch(0.88 0.01 260);
-  --input: oklch(0.88 0.01 260);
-  --ring: oklch(0.4 0.15 260);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  /* Town Pass Design System - Based on color_vars.md */
+  
+  /* Primary Colors */
+  --primary-50: #EDF8FA;
+  --primary-100: #DBF1F5;
+  --primary-200: #B4E2EA;
+  --primary-300: #93D4DF;
+  --primary-400: #71C5D5;
+  --primary-500: #5AB4C5;
+  --primary-600: #468D9B;
+  --primary-700: #356C77;
+  --primary-800: #22474E;
+  --primary-900: #112629;
+  --primary-950: #081315;
+  
+  /* Secondary Colors */
+  --secondary-50: #FDF8ED;
+  --secondary-100: #FCF2DF;
+  --secondary-200: #F8E3BC;
+  --secondary-300: #F4D69E;
+  --secondary-400: #F0C87C;
+  --secondary-500: #F5BA4B;
+  --secondary-600: #E7A43C;
+  --secondary-700: #AD7B2B;
+  --secondary-800: #74521B;
+  --secondary-900: #3C2B0B;
+  --secondary-950: #1C1304;
+  
+  /* Grey Colors */
+  --grey-50: #F1F3F4;
+  --grey-100: #E3E7E5;
+  --grey-200: #CAD1D5;
+  --grey-300: #ADB8BE;
+  --grey-400: #91A0A8;
+  --grey-500: #738995;
+  --grey-600: #5E6D76;
+  --grey-700: #475259;
+  --grey-800: #30383D;
+  --grey-900: #171B1D;
+  --grey-950: #0B0D0E;
+  
+  /* Status Colors */
+  --red-300: #E29494;
+  --red-500: #D45251;
+  --orange-300: #F4B992;
+  --orange-500: #FD853A;
+  --green-500: #76A732;
+  
+  /* Background Colors */
+  --bg-white: #FFFFFF;
+  --bg-grey: #E3E7E9;
+  
+  /* Theme Mapping */
+  --background: var(--bg-white);
+  --foreground: var(--grey-800);
+  --card: var(--bg-white);
+  --card-foreground: var(--grey-800);
+  --popover: var(--bg-white);
+  --popover-foreground: var(--grey-800);
+  --primary: var(--primary-500);
+  --primary-foreground: var(--bg-white);
+  --secondary: var(--secondary-500);
+  --secondary-foreground: var(--grey-950);
+  --muted: var(--grey-100);
+  --muted-foreground: var(--grey-700);
+  --accent: var(--secondary-500);
+  --accent-foreground: var(--grey-950);
+  --destructive: var(--red-500);
+  --destructive-foreground: var(--bg-white);
+  --border: var(--grey-200);
+  --input: var(--grey-200);
+  --ring: var(--primary-500);
+  --chart-1: var(--primary-500);
+  --chart-2: var(--secondary-500);
+  --chart-3: var(--green-500);
+  --chart-4: var(--orange-500);
+  --chart-5: var(--red-500);
   --radius: 1rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: var(--bg-white);
+  --sidebar-foreground: var(--grey-800);
+  --sidebar-primary: var(--primary-500);
+  --sidebar-primary-foreground: var(--bg-white);
+  --sidebar-accent: var(--grey-50);
+  --sidebar-accent-foreground: var(--grey-800);
+  --sidebar-border: var(--grey-200);
+  --sidebar-ring: var(--primary-500);
 }
 
 .dark {
-  --background: oklch(0.12 0.02 260);
-  --foreground: oklch(0.98 0.005 260);
-  --card: oklch(0.15 0.02 260);
-  --card-foreground: oklch(0.98 0.005 260);
-  --popover: oklch(0.15 0.02 260);
-  --popover-foreground: oklch(0.98 0.005 260);
-  --primary: oklch(0.55 0.15 260);
-  --primary-foreground: oklch(0.98 0.005 260);
-  --secondary: oklch(0.22 0.02 260);
-  --secondary-foreground: oklch(0.98 0.005 260);
-  --muted: oklch(0.22 0.02 260);
-  --muted-foreground: oklch(0.65 0.02 260);
-  --accent: oklch(0.7 0.18 40);
-  --accent-foreground: oklch(0.12 0.02 260);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.98 0.005 260);
-  --border: oklch(0.22 0.02 260);
-  --input: oklch(0.22 0.02 260);
-  --ring: oklch(0.55 0.15 260);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  /* Dark mode - using darker shades from the palette */
+  --background: var(--grey-950);
+  --foreground: var(--grey-50);
+  --card: var(--grey-900);
+  --card-foreground: var(--grey-50);
+  --popover: var(--grey-900);
+  --popover-foreground: var(--grey-50);
+  --primary: var(--primary-400);
+  --primary-foreground: var(--grey-950);
+  --secondary: var(--secondary-400);
+  --secondary-foreground: var(--grey-950);
+  --muted: var(--grey-800);
+  --muted-foreground: var(--grey-400);
+  --accent: var(--secondary-400);
+  --accent-foreground: var(--grey-950);
+  --destructive: var(--red-500);
+  --destructive-foreground: var(--grey-50);
+  --border: var(--grey-800);
+  --input: var(--grey-800);
+  --ring: var(--primary-400);
+  --chart-1: var(--primary-400);
+  --chart-2: var(--secondary-400);
+  --chart-3: var(--green-500);
+  --chart-4: var(--orange-500);
+  --chart-5: var(--red-500);
+  --sidebar: var(--grey-950);
+  --sidebar-foreground: var(--grey-50);
+  --sidebar-primary: var(--primary-400);
+  --sidebar-primary-foreground: var(--grey-950);
+  --sidebar-accent: var(--grey-800);
+  --sidebar-accent-foreground: var(--grey-50);
+  --sidebar-border: var(--grey-800);
+  --sidebar-ring: var(--primary-400);
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  /* Fonts - Town Pass Design System */
+  --font-sans: "PingFang SC", "PingFang TC", "Microsoft JhengHei", "Roboto", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, monospace;
+  
+  /* Primary Colors */
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-primary-950: var(--primary-950);
+  
+  /* Secondary Colors */
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+  --color-secondary-950: var(--secondary-950);
+  
+  /* Grey Colors */
+  --color-grey-50: var(--grey-50);
+  --color-grey-100: var(--grey-100);
+  --color-grey-200: var(--grey-200);
+  --color-grey-300: var(--grey-300);
+  --color-grey-400: var(--grey-400);
+  --color-grey-500: var(--grey-500);
+  --color-grey-600: var(--grey-600);
+  --color-grey-700: var(--grey-700);
+  --color-grey-800: var(--grey-800);
+  --color-grey-900: var(--grey-900);
+  --color-grey-950: var(--grey-950);
+  
+  /* Status Colors */
+  --color-red-300: var(--red-300);
+  --color-red-500: var(--red-500);
+  --color-orange-300: var(--orange-300);
+  --color-orange-500: var(--orange-500);
+  --color-green-500: var(--green-500);
+  
+  /* Semantic Colors */
+  --color-alarm-hover: var(--red-300);
+  --color-alarm-default: var(--red-500);
+  --color-reminder-hover: var(--orange-300);
+  --color-reminder-default: var(--orange-500);
+  --color-disable: var(--grey-200);
+  --color-text-direction: var(--grey-400);
+  --color-text-second: var(--grey-700);
+  --color-text-primary: var(--grey-800);
+  
+  /* Theme Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -102,10 +214,14 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  
+  /* Border Radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Sidebar */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -114,6 +230,18 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Font Sizes - Town Pass Typography */
+  --font-size-h1: 36px;
+  --line-height-h1: 48px;
+  --font-size-h2: 24px;
+  --line-height-h2: 32px;
+  --font-size-h3: 16px;
+  --line-height-h3: 22px;
+  --font-size-body: 14px;
+  --line-height-body: 20px;
+  --font-size-caption: 12px;
+  --line-height-caption: 18px;
 }
 
 @layer base {
@@ -122,5 +250,61 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+  
+  /* Town Pass Typography Utilities */
+  .font-h1-regular {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: 400;
+  }
+  
+  .font-h1-semibold {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+    font-weight: 600;
+  }
+  
+  .font-h2-regular {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
+    font-weight: 400;
+  }
+  
+  .font-h2-semibold {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
+    font-weight: 600;
+  }
+  
+  .font-h3-regular {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+    font-weight: 400;
+  }
+  
+  .font-h3-semibold {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+    font-weight: 600;
+  }
+  
+  .font-body-regular {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    font-weight: 400;
+  }
+  
+  .font-body-semibold {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    font-weight: 600;
+  }
+  
+  .font-caption-regular {
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    font-weight: 400;
   }
 }

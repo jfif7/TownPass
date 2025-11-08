@@ -58,14 +58,14 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-lg">
+      {/* Header - Using Town Pass Primary Color */}
+      <header className="sticky top-0 z-50 bg-primary-500 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-3">
             <Compass className="h-8 w-8" />
             <div>
-              <h1 className="text-2xl font-bold">TownPass</h1>
-              <p className="text-sm opacity-90">GPS Adventure Game</p>
+              <h1 className="font-h2-semibold">TownPass</h1>
+              <p className="font-caption-regular opacity-90">GPS Adventure Game</p>
             </div>
           </div>
         </div>

@@ -1,0 +1,236 @@
+{
+  "1": [
+    {
+      "id": 1,
+      "event_id": 1,
+      "name": "北門探索",
+      "description": "前往北門拍照打卡並了解其歷史",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "event_id": 1,
+      "name": "中正紀念堂巡禮",
+      "description": "參觀中正紀念堂並完成任務",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "event_id": 1,
+      "name": "總統府周邊導覽",
+      "description": "了解總統府周邊的歷史建築",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "2": [
+    {
+      "id": 4,
+      "event_id": 2,
+      "name": "迪化街老店巡禮",
+      "description": "探訪迪化街的百年老店",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 5,
+      "event_id": 2,
+      "name": "霞海城隍廟參拜",
+      "description": "參觀霞海城隍廟並了解其歷史",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 6,
+      "event_id": 2,
+      "name": "大稻埕碼頭散步",
+      "description": "漫步大稻埕碼頭欣賞河岸風光",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "3": [
+    {
+      "id": 7,
+      "event_id": 3,
+      "name": "必吃小吃挑戰",
+      "description": "品嚐士林夜市三大必吃小吃",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 8,
+      "event_id": 3,
+      "name": "遊戲區體驗",
+      "description": "體驗夜市經典遊戲",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 9,
+      "event_id": 3,
+      "name": "隱藏美食探索",
+      "description": "找到並品嚐隱藏版美食",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "4": [
+    {
+      "id": 10,
+      "event_id": 4,
+      "name": "小油坑地質觀察",
+      "description": "觀察小油坑的火山地質景觀",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 11,
+      "event_id": 4,
+      "name": "擎天崗草原漫步",
+      "description": "在擎天崗大草原散步並拍照",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 12,
+      "event_id": 4,
+      "name": "陽明書屋導覽",
+      "description": "參觀陽明書屋並了解其歷史",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "5": [
+    {
+      "id": 13,
+      "event_id": 5,
+      "name": "101 觀景台挑戰",
+      "description": "登上台北101觀景台欣賞城市景觀",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 14,
+      "event_id": 5,
+      "name": "四四南村文創探訪",
+      "description": "探訪四四南村的文創商店",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 15,
+      "event_id": 5,
+      "name": "新光三越購物趣",
+      "description": "體驗信義區的購物文化",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "6": [
+    {
+      "id": 16,
+      "event_id": 6,
+      "name": "北投圖書館打卡",
+      "description": "參觀綠建築北投圖書館",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 17,
+      "event_id": 6,
+      "name": "溫泉博物館導覽",
+      "description": "了解北投溫泉的歷史文化",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 18,
+      "event_id": 6,
+      "name": "地熱谷體驗",
+      "description": "觀賞地熱谷的溫泉奇景",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "7": [
+    {
+      "id": 19,
+      "event_id": 7,
+      "name": "貓空纜車體驗",
+      "description": "搭乘貓空纜車欣賞風景",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 20,
+      "event_id": 7,
+      "name": "茶園參觀",
+      "description": "參觀傳統茶園並了解製茶過程",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 21,
+      "event_id": 7,
+      "name": "品茗體驗",
+      "description": "在茶館品嚐台灣特色茶品",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "8": [
+    {
+      "id": 22,
+      "event_id": 8,
+      "name": "龍山寺參拜",
+      "description": "參拜龍山寺並了解其建築特色",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 23,
+      "event_id": 8,
+      "name": "剝皮寮歷史街區",
+      "description": "探訪剝皮寮老街的歷史",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 24,
+      "event_id": 8,
+      "name": "華西街夜市",
+      "description": "體驗華西街夜市的傳統小吃",
+      "order": 3,
+      "is_active": true
+    }
+  ],
+  "9": [
+    {
+      "id": 25,
+      "event_id": 9,
+      "name": "光點台北探訪",
+      "description": "參觀光點台北藝文空間",
+      "order": 1,
+      "is_active": true
+    },
+    {
+      "id": 26,
+      "event_id": 9,
+      "name": "赤峰街文創巡禮",
+      "description": "探索赤峰街的文創小店",
+      "order": 2,
+      "is_active": true
+    },
+    {
+      "id": 27,
+      "event_id": 9,
+      "name": "當代藝術館參觀",
+      "description": "欣賞當代藝術館的展覽",
+      "order": 3,
+      "is_active": true
+    }
+  ]
+}

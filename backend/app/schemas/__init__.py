@@ -7,6 +7,11 @@ from app.schemas.badge import (
     BadgeCreate, BadgeUpdate, UserBadgeCreate,
     NFCTagCreate, NFCTagUpdate, NFCTagResponse
 )
+from app.schemas.checkpoint import CheckpointResponse, CheckpointCreate, CheckpointUpdate
+from app.schemas.user_checkpoint_progress import (
+    UserCheckpointProgressResponse, UserCheckpointProgressCreate,
+    UserCheckpointProgressUpdate, CheckpointWithProgress
+)
 from app.schemas.results import EventResultsResponse
 
 __all__ = [
@@ -35,6 +40,13 @@ __all__ = [
     "NFCTagCreate",
     "NFCTagUpdate",
     "NFCTagResponse",
+    "CheckpointResponse",
+    "CheckpointCreate",
+    "CheckpointUpdate",
+    "UserCheckpointProgressResponse",
+    "UserCheckpointProgressCreate",
+    "UserCheckpointProgressUpdate",
+    "CheckpointWithProgress",
     "EventResultsResponse",
 ]
 

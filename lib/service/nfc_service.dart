@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/nfc_manager_android.dart';
-import 'package:nfc_manager_ndef/nfc_manager_ndef.dart';
 import 'package:get/get.dart';
 
 class NfcService extends GetxService {
@@ -29,6 +28,7 @@ class NfcService extends GetxService {
   }
 
   Future<void> stopNfcSession() async {
+    nfcId = null;
     return await NfcManager.instance.stopSession();
   }
 

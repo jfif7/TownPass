@@ -1,0 +1,170 @@
+{
+  "common": {
+    "appName": "台北通",
+    "appDescription": "GPS 探險遊戲",
+    "loading": "載入中...",
+    "error": "錯誤",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "確認",
+    "save": "儲存",
+    "delete": "刪除",
+    "edit": "編輯",
+    "back": "返回",
+    "next": "下一步",
+    "close": "關閉"
+  },
+  "home": {
+    "title": "台北通",
+    "subtitle": "GPS 探險遊戲",
+    "tabs": {
+      "available": "可參加",
+      "active": "進行中",
+      "completed": "已完成"
+    }
+  },
+  "event": {
+    "details": "活動詳情",
+    "aboutEvent": "關於此活動",
+    "yourProgress": "您的進度",
+    "missionsCompleted": "{completed} / {total} 個任務已完成",
+    "missionsList": "任務列表",
+    "startAdventure": "開始冒險",
+    "continue": "繼續",
+    "viewBadges": "查看徽章",
+    "startMission": "開始任務",
+    "completed": "已完成",
+    "points": "點數",
+    "missions": "{count} 個任務",
+    "badges": "{count} 個徽章",
+    "progress": "進度",
+    "loading": "載入中...",
+    "notFound": "找不到活動資料",
+    "detailTitle": "活動詳情",
+    "about": "關於此活動",
+    "missionsTitle": "任務"
+  },
+  "mission": {
+    "details": "任務詳情",
+    "progress": "進度",
+    "checkpoints": "檢查點",
+    "checkpointsCount": "{completed}/{total} 個檢查點",
+    "done": "完成",
+    "navigateHere": "開始導航",
+    "complete": "任務完成！",
+    "allCheckpointsCompleted": "您已完成所有檢查點",
+    "claimBadge": "領取徽章",
+    "loading": "載入中...",
+    "notFound": "找不到任務資料"
+  },
+  "navigation": {
+    "title": "導航",
+    "locationError": "無法存取您的位置。請啟用定位服務以使用導航功能。",
+    "distance": {
+      "near": "非常接近（約 40 公尺以內）",
+      "mid": "越來越近（40-200 公尺）",
+      "far": "繼續前進（200 公尺以上）"
+    },
+    "arrived": "您已抵達！",
+    "scanOrManual": "掃描此位置的 NFC 標籤或使用手動打卡",
+    "scanNFC": "掃描 NFC 標籤",
+    "manualCheckIn": "手動打卡",
+    "tips": "導航提示",
+    "tip1": "跟隨箭頭方向，觀察腳印減少",
+    "tip2": "箭頭指向您的目的地",
+    "tip3": "抵達後掃描 NFC 標籤以完成檢查點"
+  },
+  "complete": {
+    "congratulations": "恭喜！",
+    "missionComplete": "您完成了任務！",
+    "badgeEarned": "任務徽章已獲得",
+    "claimPrize": "領取您的獎品",
+    "showQR": "出示此 QR Code 或使用下方連結領取獎勵",
+    "openPrizeLink": "開啟獎品連結",
+    "shareAchievement": "分享成就",
+    "backToEvent": "返回活動",
+    "goToHome": "回到首頁",
+    "shareTitle": "我完成了{mission}！",
+    "shareText": "看看我在台北通的成就！"
+  },
+  "badges": {
+    "title": "徽章收藏",
+    "completedOn": "完成於 {date}",
+    "yourBadges": "您的徽章",
+    "trophy": "完成獎盃",
+    "trophyDescription": "所有徽章收集完成，組成這個特殊的獎盃！",
+    "backToHome": "返回首頁"
+  },
+  "mockData": {
+    "events": {
+      "downtown": {
+        "title": "市中心探索",
+        "description": "探索歷史悠久的市中心區域，發現隱藏的寶藏",
+        "location": "市中心區"
+      },
+      "coastal": {
+        "title": "海岸線冒險",
+        "description": "沿著美麗的海岸線旅行，探訪海濱地標",
+        "location": "海濱區"
+      },
+      "park": {
+        "title": "公園探險家",
+        "description": "穿越城市公園和自然步道",
+        "location": "城市公園"
+      },
+      "museum": {
+        "title": "博物館之旅",
+        "description": "參觀著名博物館和文化景點",
+        "location": "博物館區"
+      }
+    },
+    "missions": {
+      "historicPlaza": {
+        "title": "歷史廣場",
+        "description": "找到歷史廣場並了解其重要性"
+      },
+      "clockTower": {
+        "title": "古老鐘樓",
+        "description": "前往標誌性的鐘樓"
+      },
+      "marketSquare": {
+        "title": "市場廣場",
+        "description": "探索熱鬧的市場廣場"
+      },
+      "riversideWalk": {
+        "title": "河濱步道",
+        "description": "沿著風景優美的河邊小徑前行"
+      },
+      "artDistrict": {
+        "title": "藝術區",
+        "description": "發現充滿活力的藝術區"
+      }
+    },
+    "checkpoints": {
+      "mainEntrance": {
+        "name": "主入口",
+        "description": "找到主入口大門"
+      },
+      "fountainPlaza": {
+        "name": "噴泉廣場",
+        "description": "找到中央噴泉"
+      },
+      "foodCourt": {
+        "name": "美食街",
+        "description": "參觀當地美食街區域"
+      },
+      "artisanCorner": {
+        "name": "工藝角",
+        "description": "找到手工藝品角落"
+      }
+    },
+    "badgeNames": {
+      "ancientHistory": "古代歷史",
+      "modernArt": "現代藝術",
+      "naturalScience": "自然科學",
+      "culturalHeritage": "文化遺產",
+      "architecture": "建築藝術",
+      "photography": "攝影藝術"
+    }
+  }
+}

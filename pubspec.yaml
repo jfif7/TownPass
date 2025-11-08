@@ -58,6 +58,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   nfc_manager: ^4.0.2
   nfc_manager_ndef: ^1.0.1
+  sensors_plus: ^7.0.0
 
 dev_dependencies:
   build_runner: ^2.4.12

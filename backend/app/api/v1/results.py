@@ -131,10 +131,13 @@ async def get_event_results(
             "points_earned": points_earned
         })
     
+    # 優先使用資料庫中的 status，如果沒有則計算
+    # 注意：results.py 中使用 "completed" 而不是 "past"
+    event_status = event.status if event.status else get_event_status(event)
     return EventResultsResponse(
         event_id=event.id,
         event_title=event.title,
-        event_status=get_event_status(event),
+        event_status=event_status,
         total_missions=total_missions,
         my_missions_hit=my_missions_hit,
         completion_percentage=completion_percentage,

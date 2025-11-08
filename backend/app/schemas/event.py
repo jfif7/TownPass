@@ -55,6 +55,7 @@ class EventCreate(BaseModel):
     cover_image_url: Optional[str] = None
     max_participants: Optional[int] = None
     admin_id: Optional[int] = None
+    status: Optional[str] = None  # upcoming, ongoing, past
 
 
 class EventUpdate(BaseModel):
@@ -66,4 +67,5 @@ class EventUpdate(BaseModel):
     cover_image_url: Optional[str] = None
     max_participants: Optional[int] = None
     is_active: Optional[bool] = None
+    status: Optional[str] = None  # upcoming, ongoing, past
 

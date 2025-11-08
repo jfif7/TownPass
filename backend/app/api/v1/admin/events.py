@@ -25,6 +25,8 @@ def get_event_status(event) -> str:
 
 def event_to_response(event) -> EventResponse:
     """將 Event 模型轉換為 EventResponse"""
+    # 優先使用資料庫中的 status，如果沒有則計算
+    event_status = event.status if event.status else get_event_status(event)
     return EventResponse(
         id=event.id,
         title=event.title,
@@ -33,7 +35,7 @@ def event_to_response(event) -> EventResponse:
         end_time=event.end_time,
         location=event.location,
         cover_image_url=event.cover_image_url,
-        status=get_event_status(event),
+        status=event_status,
         total_missions=None,
         my_missions_completed=None,
         is_registered=None

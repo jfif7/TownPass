@@ -77,6 +77,20 @@ def get_user_event_progress(db: Session, user_id: int, event_id: int) -> dict:
 
 def create_event(db: Session, event_data: dict) -> Event:
     """創建新活動"""
+    # 如果沒有提供 status，則根據時間自動計算
+    if "status" not in event_data or event_data["status"] is None:
+        now = datetime.now(timezone.utc)
+        start_time = event_data.get("start_time")
+        end_time = event_data.get("end_time")
+        
+        if start_time and end_time:
+            if start_time > now:
+                event_data["status"] = "upcoming"
+            elif end_time < now:
+                event_data["status"] = "past"
+            else:
+                event_data["status"] = "ongoing"
+    
     db_event = Event(**event_data)
     db.add(db_event)
     db.commit()

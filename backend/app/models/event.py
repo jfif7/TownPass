@@ -20,10 +20,12 @@ class Event(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
     max_participants = Column(Integer, nullable=True)
+    status = Column(String(20), nullable=True, index=True)  # upcoming, ongoing, past
 
     # Constraints
     __table_args__ = (
         CheckConstraint("end_time > start_time", name="check_end_after_start"),
+        CheckConstraint("status IN ('upcoming', 'ongoing', 'past') OR status IS NULL", name="check_status_values"),
     )
 
     # Relationships

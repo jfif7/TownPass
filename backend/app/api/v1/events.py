@@ -49,6 +49,8 @@ async def get_events(
     event_responses = []
     for event in events:
         progress = crud_event.get_user_event_progress(db, current_user.id, event.id)
+        # 優先使用資料庫中的 status，如果沒有則計算
+        event_status = event.status if event.status else get_event_status(event)
         event_response = EventResponse(
             id=event.id,
             title=event.title,
@@ -57,7 +59,7 @@ async def get_events(
             end_time=event.end_time,
             location=event.location,
             cover_image_url=event.cover_image_url,
-            status=get_event_status(event),
+            status=event_status,
             total_missions=progress["total_missions"],
             my_missions_completed=progress["completed_missions"],
             is_registered=progress["completed_missions"] > 0
@@ -136,6 +138,8 @@ async def get_event_detail(
     # 取得可用徽章（簡化版，實際應該從 badge 表查詢）
     badges_available = []  # TODO: 實作徽章查詢
     
+    # 優先使用資料庫中的 status，如果沒有則計算
+    event_status = event.status if event.status else get_event_status(event)
     return EventDetail(
         id=event.id,
         admin_id=event.admin_id,
@@ -146,7 +150,7 @@ async def get_event_detail(
         end_time=event.end_time,
         location=event.location,
         cover_image_url=event.cover_image_url,
-        status=get_event_status(event),
+        status=event_status,
         total_missions=len(missions),
         missions=mission_responses,
         my_progress={

@@ -34,9 +34,9 @@ export default function MissionDetailPage() {
         
         if (!missionData) throw new Error('No mission data')
 
-        // 取得 checkpoints
+        // 取得 checkpoints (使用包含使用者進度的端點)
         const checkpointsRes = await fetch(
-          `${API_URL}admin/checkpoints/mission/${params.id}?skip=0&limit=100&include_inactive=false`,
+          `${API_URL}missions/${params.id}/checkpoints?skip=0&limit=100`,
           {
             headers: {
               Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
@@ -44,6 +44,7 @@ export default function MissionDetailPage() {
           }
         )
         const checkpointsData = await checkpointsRes.json()
+        console.log('Checkpoints Data with Progress:', checkpointsData) 
         const checkpoints = Array.isArray(checkpointsData) ? checkpointsData : []
 
         // 映射為前端使用的結構

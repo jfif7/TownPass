@@ -1,56 +1,29 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Award } from "lucide-react"
 import { useTranslations, useLocale } from 'next-intl'
 
-// Mock data for completed event with badges forming an image
-const mockCompletedEvent = {
-  id: "4",
-  title: "Museum Quest",
-  description: "Completed tour of famous museums and cultural sites",
-  completedDate: "2024-01-15",
-  badges: [
-    {
-      id: "b1",
-      name: "Ancient History",
-      imageUrl: "/ancient-history-badge.jpg",
-      position: { row: 0, col: 0 },
-    },
-    {
-      id: "b2",
-      name: "Modern Art",
-      imageUrl: "/modern-art-badge.jpg",
-      position: { row: 0, col: 1 },
-    },
-    {
-      id: "b3",
-      name: "Natural Science",
-      imageUrl: "/science-badge.png",
-      position: { row: 0, col: 2 },
-    },
-    {
-      id: "b4",
-      name: "Cultural Heritage",
-      imageUrl: "/heritage-badge.jpg",
-      position: { row: 1, col: 0 },
-    },
-    {
-      id: "b5",
-      name: "Architecture",
-      imageUrl: "/architecture-badge.jpg",
-      position: { row: 1, col: 1 },
-    },
-    {
-      id: "b6",
-      name: "Photography",
-      imageUrl: "/photography-badge.jpg",
-      position: { row: 1, col: 2 },
-    },
-  ],
-  largeImage: "/placeholder.svg?height=400&width=400",
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
+type Badge = {
+  id: string
+  name: string
+  imageUrl: string
+  earnedAt: string
+  description?: string
+}
+
+type EventData = {
+  id: string
+  title: string
+  description: string
+  completedDate: string
+  badges: Badge[]
+  largeImage?: string
 }
 
 export default function BadgesPage() {
@@ -58,7 +31,100 @@ export default function BadgesPage() {
   const router = useRouter()
   const t = useTranslations('badges')
   const locale = useLocale()
-  const event = mockCompletedEvent
+  const [eventData, setEventData] = useState<EventData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchBadges() {
+      setLoading(true)
+      setError(null)
+      try {
+        // 取得使用者在該活動的徽章
+        const badgesRes = await fetch(
+          `${API_URL}badges/me/badges?event_id=${params.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+            },
+          }
+        )
+        
+        if (!badgesRes.ok) {
+          throw new Error('Failed to fetch badges')
+        }
+
+        const badgesData = await badgesRes.json()
+
+        // 處理不同的回應格式 (可能是陣列或包含 data 屬性的物件)
+        const badges = Array.isArray(badgesData) 
+          ? badgesData 
+          : (badgesData.data || badgesData.badges || [])
+
+        // 取得活動資訊
+        const eventRes = await fetch(`${API_URL}events/${params.id}`, {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+          },
+        })
+        
+        const eventInfo = await eventRes.json()
+        
+        // 組合資料
+        const getValidDate = (dateStr: any): string => {
+          if (!dateStr) return new Date().toISOString()
+          const date = new Date(dateStr)
+          return isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString()
+        }
+
+        const mapped: EventData = {
+          id: String(params.id),
+          title: eventInfo.title || 'Event',
+          description: eventInfo.description || '',
+          completedDate: badges.length > 0 
+            ? getValidDate(badges[0].earned_at).split('T')[0]
+            : new Date().toISOString().split('T')[0],
+          badges: badges.map((badge: any) => ({
+            id: String(badge.badge_id || badge.id),
+            name: badge.badge_name || badge.name,
+            imageUrl: badge.badge_image_url || badge.image_url || "/placeholder.svg",
+            earnedAt: getValidDate(badge.earned_at),
+            description: badge.badge_description || badge.description,
+          })),
+          largeImage: eventInfo.cover_image_url || "/placeholder.svg?height=400&width=400",
+        }
+
+        setEventData(mapped)
+      } catch (e) {
+        console.error('Failed to fetch badges:', e)
+        setError('Failed to load badges')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (params.id) {
+      fetchBadges()
+    }
+  }, [params.id])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground">載入中...</p>
+      </div>
+    )
+  }
+
+  if (error || !eventData) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-red-500">{error || '找不到活動資料'}</p>
+      </div>
+    )
+  }
+
+  const event = eventData
 
   return (
     <div className="min-h-screen bg-background">
@@ -104,25 +170,39 @@ export default function BadgesPage() {
           <CardContent className="p-6">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
               <Award className="h-5 w-5 text-accent" />
-              {t('yourBadges')}
+              {t('yourBadges')} ({event.badges.length})
             </h3>
-            <div className="grid grid-cols-3 gap-2 mb-6">
-              {event.badges.map((badge) => (
-                <div
-                  key={badge.id}
-                  className="aspect-square relative group overflow-hidden rounded-lg border-2 border-border hover:border-accent transition-colors"
-                >
-                  <img
-                    src={badge.imageUrl || "/placeholder.svg"}
-                    alt={badge.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2">
-                    <p className="text-white text-xs text-center font-semibold">{badge.name}</p>
+            {event.badges.length > 0 ? (
+              <div className="grid grid-cols-3 gap-2 mb-6">
+                {event.badges.map((badge) => (
+                  <div
+                    key={badge.id}
+                    className="aspect-square relative group overflow-hidden rounded-lg border-2 border-border hover:border-accent transition-colors"
+                  >
+                    <img
+                      src={badge.imageUrl || "/placeholder.svg"}
+                      alt={badge.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2">
+                      <div className="text-white text-center">
+                        <p className="text-xs font-semibold">{badge.name}</p>
+                        {badge.description && (
+                          <p className="text-[10px] mt-1 opacity-90">{badge.description}</p>
+                        )}
+                        <p className="text-[10px] mt-1 opacity-75">
+                          {new Date(badge.earnedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>尚未獲得任何徽章</p>
+              </div>
+            )}
 
             {/* Completion Trophy */}
             <div className="pt-6 border-t">

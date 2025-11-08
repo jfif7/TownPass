@@ -8,6 +8,7 @@ import 'package:town_pass/gen/assets.gen.dart';
 import 'package:town_pass/service/account_service.dart';
 import 'package:town_pass/service/device_service.dart';
 import 'package:town_pass/service/geo_locator_service.dart';
+import 'package:town_pass/service/nfc_service.dart';
 import 'package:town_pass/service/notification_service.dart';
 import 'package:town_pass/service/shared_preferences_service.dart';
 import 'package:town_pass/service/subscription_service.dart';
@@ -191,6 +192,48 @@ class LocationMessageHandler extends TPWebMessageHandler {
     onReply?.call(replyWebMessage(
       data: position?.toJson() ?? [],
     ));
+  }
+}
+
+class NfcMessageHandler extends TPWebMessageHandler {
+  @override
+  String get name => 'nfc';
+
+  @override
+  handle({
+    required Object? message,
+    required WebUri? sourceOrigin,
+    required bool isMainFrame,
+    required Function(WebMessage reply)? onReply,
+  }) async {
+    var nfcService = Get.find<NfcService>();
+
+    if (message == null || message is! String) {
+      onReply?.call(
+        replyWebMessage(data: false),
+      );
+    }
+
+    if (!nfcService.isNfcAvailable) {
+      onReply?.call(
+        replyWebMessage(data: false),
+      );
+      return;
+    }
+
+    WebMessage replyMessage = replyWebMessage(data: false);
+
+    switch (message as String) {
+      case 'start':
+        await nfcService.startNfcSession();
+      case 'stop':
+        await nfcService.stopNfcSession();
+      case 'read':
+        String? nfcData = await nfcService.readNfc();
+        replyMessage = replyWebMessage(data: nfcData ?? []);
+    }
+
+    onReply?.call(replyMessage);
   }
 }
 

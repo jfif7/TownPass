@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "tag_uid": "04:A3:B2:C1:D4:E5:F6",
+    "checkpoint_id": 1,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 2,
+    "tag_uid": "04:B4:C3:D2:E1:F0:A9",
+    "checkpoint_id": 4,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 3,
+    "tag_uid": "04:C5:D4:E3:F2:A1:B0",
+    "checkpoint_id": 7,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 4,
+    "tag_uid": "04:D6:E5:F4:A3:B2:C1",
+    "checkpoint_id": 10,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 5,
+    "tag_uid": "04:E7:F6:A5:B4:C3:D2",
+    "checkpoint_id": 13,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 6,
+    "tag_uid": "04:F8:A7:B6:C5:D4:E3",
+    "checkpoint_id": 16,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 7,
+    "tag_uid": "04:A9:B8:C7:D6:E5:F4",
+    "checkpoint_id": 19,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 8,
+    "tag_uid": "04:BA:C9:D8:E7:F6:A5",
+    "checkpoint_id": 22,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 9,
+    "tag_uid": "04:CB:DA:E9:F8:A7:B6",
+    "checkpoint_id": 25,
+    "reward_points": 10,
+    "is_active": true
+  },
+  {
+    "id": 10,
+    "tag_uid": "04:DC:EB:FA:A9:B8:C7",
+    "checkpoint_id": 28,
+    "reward_points": 10,
+    "is_active": true
+  }
+]

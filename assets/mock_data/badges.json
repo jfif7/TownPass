@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "北門探險家",
+    "description": "完成北門探索任務",
+    "image_url": "https://picsum.photos/200/200?random=badge1",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-11-05T14:30:00.000Z",
+    "event_id": 1,
+    "event_title": "台北古城探索之旅"
+  },
+  {
+    "id": 2,
+    "name": "中正紀念堂達人",
+    "description": "完成中正紀念堂巡禮任務",
+    "image_url": "https://picsum.photos/200/200?random=badge2",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-11-06T10:15:00.000Z",
+    "event_id": 1,
+    "event_title": "台北古城探索之旅"
+  },
+  {
+    "id": 3,
+    "name": "迪化街文化使者",
+    "description": "完成迪化街老店巡禮任務",
+    "image_url": "https://picsum.photos/200/200?random=badge3",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-11-03T16:45:00.000Z",
+    "event_id": 2,
+    "event_title": "大稻埕文化巡禮"
+  },
+  {
+    "id": 4,
+    "name": "小油坑地質學家",
+    "description": "完成小油坑地質觀察任務",
+    "image_url": "https://picsum.photos/200/200?random=badge4",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-11-02T11:20:00.000Z",
+    "event_id": 4,
+    "event_title": "陽明山自然生態之旅"
+  },
+  {
+    "id": 5,
+    "name": "信義時尚達人",
+    "description": "完成101觀景台挑戰任務",
+    "image_url": "https://picsum.photos/200/200?random=badge5",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-11-01T15:30:00.000Z",
+    "event_id": 5,
+    "event_title": "信義商圈時尚之旅"
+  },
+  {
+    "id": 6,
+    "name": "四四南村文創家",
+    "description": "完成四四南村文創探訪任務",
+    "image_url": "https://picsum.photos/200/200?random=badge6",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-11-04T13:00:00.000Z",
+    "event_id": 5,
+    "event_title": "信義商圈時尚之旅"
+  },
+  {
+    "id": 7,
+    "name": "貓空纜車達人",
+    "description": "完成貓空纜車體驗任務",
+    "image_url": "https://picsum.photos/200/200?random=badge7",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-10-28T09:45:00.000Z",
+    "event_id": 7,
+    "event_title": "貓空茶文化體驗"
+  },
+  {
+    "id": 8,
+    "name": "茶園探索者",
+    "description": "完成茶園參觀任務",
+    "image_url": "https://picsum.photos/200/200?random=badge8",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-10-29T14:20:00.000Z",
+    "event_id": 7,
+    "event_title": "貓空茶文化體驗"
+  },
+  {
+    "id": 9,
+    "name": "品茗大師",
+    "description": "完成品茗體驗任務",
+    "image_url": "https://picsum.photos/200/200?random=badge9",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-10-30T16:00:00.000Z",
+    "event_id": 7,
+    "event_title": "貓空茶文化體驗"
+  },
+  {
+    "id": 10,
+    "name": "龍山寺虔誠信徒",
+    "description": "完成龍山寺參拜任務",
+    "image_url": "https://picsum.photos/200/200?random=badge10",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-10-10T10:30:00.000Z",
+    "event_id": 8,
+    "event_title": "萬華龍山寺文化巡禮"
+  },
+  {
+    "id": 11,
+    "name": "剝皮寮歷史學家",
+    "description": "完成剝皮寮歷史街區任務",
+    "image_url": "https://picsum.photos/200/200?random=badge11",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-10-15T12:00:00.000Z",
+    "event_id": 8,
+    "event_title": "萬華龍山寺文化巡禮"
+  },
+  {
+    "id": 12,
+    "name": "華西街美食家",
+    "description": "完成華西街夜市任務",
+    "image_url": "https://picsum.photos/200/200?random=badge12",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-10-20T19:30:00.000Z",
+    "event_id": 8,
+    "event_title": "萬華龍山寺文化巡禮"
+  },
+  {
+    "id": 13,
+    "name": "光點電影愛好者",
+    "description": "完成光點台北探訪任務",
+    "image_url": "https://picsum.photos/200/200?random=badge13",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-09-25T15:00:00.000Z",
+    "event_id": 9,
+    "event_title": "中山區文創之旅"
+  },
+  {
+    "id": 14,
+    "name": "赤峰街文青",
+    "description": "完成赤峰街文創巡禮任務",
+    "image_url": "https://picsum.photos/200/200?random=badge14",
+    "badge_type": "mission_complete",
+    "timestamp_earned": "2025-10-01T14:30:00.000Z",
+    "event_id": 9,
+    "event_title": "中山區文創之旅"
+  },
+  {
+    "id": 15,
+    "name": "活動完成大師",
+    "description": "完成整個活動的所有任務",
+    "image_url": "https://picsum.photos/200/200?random=badge15",
+    "badge_type": "event_complete",
+    "timestamp_earned": "2025-10-31T18:00:00.000Z",
+    "event_id": 8,
+    "event_title": "萬華龍山寺文化巡禮"
+  },
+  {
+    "id": 16,
+    "name": "貓空茶文化大使",
+    "description": "完成貓空茶文化體驗活動",
+    "image_url": "https://picsum.photos/200/200?random=badge16",
+    "badge_type": "event_complete",
+    "timestamp_earned": "2025-11-10T17:00:00.000Z",
+    "event_id": 7,
+    "event_title": "貓空茶文化體驗"
+  }
+]

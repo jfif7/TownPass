@@ -53,7 +53,9 @@
     "navigateHere": "開始導航",
     "complete": "任務完成！",
     "allCheckpointsCompleted": "您已完成所有檢查點",
-    "claimBadge": "領取徽章"
+    "claimBadge": "領取徽章",
+    "loading": "載入中...",
+    "notFound": "找不到任務資料"
   },
   "navigation": {
     "title": "導航",

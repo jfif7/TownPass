@@ -53,7 +53,9 @@
     "navigateHere": "Navigate Here",
     "complete": "Mission Complete!",
     "allCheckpointsCompleted": "You've completed all checkpoints",
-    "claimBadge": "Claim Your Badge"
+    "claimBadge": "Claim Your Badge",
+    "loading": "Loading...",
+    "notFound": "Mission not found"
   },
   "navigation": {
     "title": "Navigation",

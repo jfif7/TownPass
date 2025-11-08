@@ -76,15 +76,30 @@ export default function NavigationPage() {
   const [distanceLevel, setDistanceLevel] = useState<"near" | "mid" | "far">(
     "far"
   )
-  const [showNFCScanner, setShowNFCScanner] = useState(false)
+  const [enableNFC, setEnableNFC] = useState(false)
   const [locationError, setLocationError] = useState(false)
   const [debugm, setDebugm] = useState("")
   const [counter, setCounter] = useState(0)
 
   useHandleConnectionData((e) => {
-    setDebugm(e.data)
-    setCounter(counter + 1)
     const data = JSON.parse(e.data)
+    if (!data || data.name !== "nfc") {
+      return
+    }
+    const tagId = data.data
+    if (typeof tagId === "string") {
+      console.error(tagId)
+    }
+  })
+
+  useHandleConnectionData((e) => {
+    const data = JSON.parse(e.data)
+    if (!data) {
+      return
+    }
+    if (data["name"] !== "location") {
+      return
+    }
     if (data && data["data"] && data["data"]["latitude"]) {
       const newLocation = {
         lat: data["data"]["latitude"],
@@ -103,7 +118,7 @@ export default function NavigationPage() {
       // Set distance level
       if (dist < 40) {
         setDistanceLevel("near")
-        setShowNFCScanner(true)
+        setEnableNFC(true)
       } else if (dist < 200) {
         setDistanceLevel("mid")
       } else {
@@ -136,11 +151,16 @@ export default function NavigationPage() {
     return () => clearInterval(locationInterval)
   }, [])
 
-  const handleNFCScan = () => {
-    // In a real app, this would trigger NFC scanning
-    console.log("[v0] NFC scan initiated")
-    router.push(`/${locale}/complete/m3`)
-  }
+  useEffect(() => {
+    postFlutterMessage("nfc", "start")
+    const nfcInterval = setInterval(() => {
+      postFlutterMessage("nfc", "read")
+    }, 1000)
+    return () => {
+      postFlutterMessage("nfc", "stop")
+      clearInterval(nfcInterval)
+    }
+  }, [])
 
   const handleManualCheckIn = () => {
     // Backup check-in method
@@ -165,7 +185,11 @@ export default function NavigationPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-xl font-bold">{t("title")}</h1>
+              <h1 className="text-xl font-bold">
+                {t("title")}
+                {debugm}
+                {counter}
+              </h1>
               <p className="text-sm opacity-90">{point.name}</p>
             </div>
           </div>
@@ -220,7 +244,7 @@ export default function NavigationPage() {
         </Card>
 
         {/* Check-in Options */}
-        {showNFCScanner && (
+        {enableNFC && (
           <Card className="border-accent bg-accent/5">
             <CardContent className="p-6 space-y-4">
               <div className="text-center">
@@ -232,7 +256,7 @@ export default function NavigationPage() {
               </div>
 
               <div className="space-y-3">
-                <Button onClick={handleNFCScan} size="lg" className="w-full">
+                <Button size="lg" className="w-full" disabled={!false}>
                   <Scan className="mr-2 h-5 w-5" />
                   {t("scanNFC")}
                 </Button>

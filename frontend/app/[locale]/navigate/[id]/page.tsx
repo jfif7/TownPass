@@ -6,37 +6,54 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Navigation, Footprints, Scan, MapPin } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations, useLocale } from "next-intl"
+import {
+  postFlutterMessage,
+  useHandleConnectionData,
+} from "@/hooks/use-flutter"
 
 // Mock data
 const mockPointDetails = {
   id: "p3",
   name: "Food Court",
   description: "Visit the local food court area",
-  targetLat: 25.034,
-  targetLng: 121.5665,
+  targetLat: 25.0217245,
+  targetLng: 121.5351365,
 }
 
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+function calculateDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
   const R = 6371e3 // Earth's radius in meters
   const φ1 = (lat1 * Math.PI) / 180
   const φ2 = (lat2 * Math.PI) / 180
   const Δφ = ((lat2 - lat1) * Math.PI) / 180
   const Δλ = ((lon2 - lon1) * Math.PI) / 180
 
-  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
   return R * c // Distance in meters
 }
 
-function calculateBearing(lat1: number, lon1: number, lat2: number, lon2: number) {
+function calculateBearing(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
   const φ1 = (lat1 * Math.PI) / 180
   const φ2 = (lat2 * Math.PI) / 180
   const Δλ = ((lon2 - lon1) * Math.PI) / 180
 
   const y = Math.sin(Δλ) * Math.cos(φ2)
-  const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ)
+  const x =
+    Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ)
   const θ = Math.atan2(y, x)
   const bearing = ((θ * 180) / Math.PI + 360) % 360
 
@@ -46,58 +63,78 @@ function calculateBearing(lat1: number, lon1: number, lat2: number, lon2: number
 export default function NavigationPage() {
   const params = useParams()
   const router = useRouter()
-  const t = useTranslations('navigation')
+  const t = useTranslations("navigation")
   const locale = useLocale()
   const point = mockPointDetails
 
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [userLocation, setUserLocation] = useState<{
+    lat: number
+    lng: number
+  } | null>(null)
   const [heading, setHeading] = useState<number>(0)
   const [distance, setDistance] = useState<number | null>(null)
-  const [distanceLevel, setDistanceLevel] = useState<"near" | "mid" | "far">("far")
+  const [distanceLevel, setDistanceLevel] = useState<"near" | "mid" | "far">(
+    "far"
+  )
   const [showNFCScanner, setShowNFCScanner] = useState(false)
   const [locationError, setLocationError] = useState(false)
+  const [debugm, setDebugm] = useState("")
+  const [counter, setCounter] = useState(0)
 
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      const watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const newLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }
-          setUserLocation(newLocation)
-          setLocationError(false)
-
-          // Calculate distance
-          const dist = calculateDistance(newLocation.lat, newLocation.lng, point.targetLat, point.targetLng)
-          setDistance(dist)
-
-          // Set distance level
-          if (dist < 40) {
-            setDistanceLevel("near")
-            setShowNFCScanner(true)
-          } else if (dist < 200) {
-            setDistanceLevel("mid")
-          } else {
-            setDistanceLevel("far")
-          }
-
-          // Calculate bearing
-          const bearing = calculateBearing(newLocation.lat, newLocation.lng, point.targetLat, point.targetLng)
-          setHeading(bearing)
-        },
-        (error) => {
-          console.error("[v0] Geolocation error:", error)
-          setLocationError(true)
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
+  useHandleConnectionData((e) => {
+    setDebugm(e.data)
+    setCounter(counter + 1)
+    const data = JSON.parse(e.data)
+    if (data && data["data"] && data["data"]["latitude"]) {
+      const newLocation = {
+        lat: data["data"]["latitude"],
+        lng: data["data"]["longitude"],
+      }
+      setUserLocation(newLocation)
+      setLocationError(false)
+      const dist = calculateDistance(
+        newLocation.lat,
+        newLocation.lng,
+        point.targetLat,
+        point.targetLng
       )
+      setDistance(dist)
 
-      return () => navigator.geolocation.clearWatch(watchId)
+      // Set distance level
+      if (dist < 40) {
+        setDistanceLevel("near")
+        setShowNFCScanner(true)
+      } else if (dist < 200) {
+        setDistanceLevel("mid")
+      } else {
+        setDistanceLevel("far")
+      }
+
+      // Calculate bearing
+      const bearing = calculateBearing(
+        newLocation.lat,
+        newLocation.lng,
+        point.targetLat,
+        point.targetLng
+      )
+      setHeading(bearing)
     } else {
+      console.error("[v0] Geolocation error:", e.data)
       setLocationError(true)
     }
-  }, [point.targetLat, point.targetLng])
+  })
+  useEffect(() => {
+    // Initial location request
+    postFlutterMessage("location", null)
+
+    // Set up interval to refresh location every 1 second
+    const locationInterval = setInterval(() => {
+      postFlutterMessage("location", null)
+    }, 1000)
+
+    // Cleanup interval on unmount or when dependencies change
+    return () => clearInterval(locationInterval)
+  }, [])
 
   const handleNFCScan = () => {
     // In a real app, this would trigger NFC scanning
@@ -110,7 +147,8 @@ export default function NavigationPage() {
     router.push(`/${locale}/complete/m3`)
   }
 
-  const footstepCount = distanceLevel === "near" ? 1 : distanceLevel === "mid" ? 2 : 3
+  const footstepCount =
+    distanceLevel === "near" ? 1 : distanceLevel === "mid" ? 2 : 3
 
   return (
     <div className="min-h-screen bg-background">
@@ -127,7 +165,7 @@ export default function NavigationPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-xl font-bold">{t('title')}</h1>
+              <h1 className="text-xl font-bold">{t("title")}</h1>
               <p className="text-sm opacity-90">{point.name}</p>
             </div>
           </div>
@@ -137,9 +175,7 @@ export default function NavigationPage() {
       <div className="container mx-auto px-4 py-6 space-y-6">
         {locationError && (
           <Alert variant="destructive">
-            <AlertDescription>
-              {t('locationError')}
-            </AlertDescription>
+            <AlertDescription>{t("locationError")}</AlertDescription>
           </Alert>
         )}
 
@@ -166,16 +202,18 @@ export default function NavigationPage() {
                   ))}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {distanceLevel === "near" && t('distance.near')}
-                  {distanceLevel === "mid" && t('distance.mid')}
-                  {distanceLevel === "far" && t('distance.far')}
+                  {distanceLevel === "near" && t("distance.near")}
+                  {distanceLevel === "mid" && t("distance.mid")}
+                  {distanceLevel === "far" && t("distance.far")}
                 </p>
               </div>
 
               {/* Target Info */}
               <div className="text-center">
                 <h3 className="text-xl font-bold mb-1">{point.name}</h3>
-                <p className="text-sm text-muted-foreground">{point.description}</p>
+                <p className="text-sm text-muted-foreground">
+                  {point.description}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -187,19 +225,24 @@ export default function NavigationPage() {
             <CardContent className="p-6 space-y-4">
               <div className="text-center">
                 <MapPin className="h-12 w-12 text-accent mx-auto mb-3" />
-                <h3 className="text-xl font-bold mb-2">{t('arrived')}</h3>
+                <h3 className="text-xl font-bold mb-2">{t("arrived")}</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  {t('scanOrManual')}
+                  {t("scanOrManual")}
                 </p>
               </div>
 
               <div className="space-y-3">
                 <Button onClick={handleNFCScan} size="lg" className="w-full">
                   <Scan className="mr-2 h-5 w-5" />
-                  {t('scanNFC')}
+                  {t("scanNFC")}
                 </Button>
-                <Button onClick={handleManualCheckIn} variant="outline" size="lg" className="w-full bg-transparent">
-                  {t('manualCheckIn')}
+                <Button
+                  onClick={handleManualCheckIn}
+                  variant="outline"
+                  size="lg"
+                  className="w-full bg-transparent"
+                >
+                  {t("manualCheckIn")}
                 </Button>
               </div>
             </CardContent>
@@ -209,19 +252,19 @@ export default function NavigationPage() {
         {/* Instructions */}
         <Card>
           <CardContent className="p-6">
-            <h4 className="font-semibold mb-3">{t('tips')}</h4>
+            <h4 className="font-semibold mb-3">{t("tips")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <Footprints className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>{t('tip1')}</span>
+                <span>{t("tip1")}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Navigation className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>{t('tip2')}</span>
+                <span>{t("tip2")}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Scan className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>{t('tip3')}</span>
+                <span>{t("tip3")}</span>
               </li>
             </ul>
           </CardContent>

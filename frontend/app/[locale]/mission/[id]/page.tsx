@@ -163,7 +163,9 @@ export default function MissionDetailPage() {
                     <p className="text-sm text-muted-foreground mb-3">{point.description}</p>
                     {!point.completed && (
                       <Button asChild size="sm" className="w-full sm:w-auto">
-                        <Link href={`/${locale}/navigate/${point.id}`}>{t('navigateHere')}</Link>
+                        <Link href={`/${locale}/${point.checkpointType === 'question' ? 'question' : 'navigate'}/${point.id}`}>
+                          {point.checkpointType === 'question' ? t('answerQuestion') : t('navigateHere')}
+                        </Link>
                       </Button>
                     )}
                   </div>

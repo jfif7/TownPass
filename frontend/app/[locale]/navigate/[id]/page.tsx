@@ -4,7 +4,14 @@ import { useParams, useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { ArrowLeft, Navigation, Footprints, Scan, MapPin } from "lucide-react"
+import {
+  ArrowLeft,
+  Navigation,
+  Footprints,
+  Scan,
+  MapPin,
+  X,
+} from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useTranslations, useLocale } from "next-intl"
 import {
@@ -12,13 +19,16 @@ import {
   useHandleConnectionData,
 } from "@/hooks/use-flutter"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
 // Mock data
 const mockPointDetails = {
   id: "p3",
   name: "Food Court",
   description: "Visit the local food court area",
-  targetLat: 25.0217245,
-  targetLng: 121.5351365,
+  targetLat: 24.9950723,
+  targetLng: 121.5430774,
+  tagId: "051b8a2b",
 }
 
 function calculateDistance(
@@ -72,25 +82,105 @@ export default function NavigationPage() {
     lng: number
   } | null>(null)
   const [heading, setHeading] = useState<number>(0)
-  const [distance, setDistance] = useState<number | null>(null)
   const [distanceLevel, setDistanceLevel] = useState<"near" | "mid" | "far">(
     "far"
   )
-  const [showNFCScanner, setShowNFCScanner] = useState(false)
+  const [enableNFC, setEnableNFC] = useState(false)
   const [locationError, setLocationError] = useState(false)
   const [debugm, setDebugm] = useState("")
   const [counter, setCounter] = useState(0)
+  const [isProcessingNFC, setIsProcessingNFC] = useState(false)
+  const [nfcProcessed, setNfcProcessed] = useState(false)
+  const [checkpointCompleted, setCheckpointCompleted] = useState(false)
+  const [nfcError, setNfcError] = useState("")
+
+  // Function to verify NFC tag and complete checkpoint
+  const verifyNFCAndCompleteCheckpoint = async (tagId: string) => {
+    if (isProcessingNFC || nfcProcessed) return
+
+    setIsProcessingNFC(true)
+    setNfcError("") // Clear any previous errors
+
+    try {
+      if (tagId !== point.tagId) {
+        console.log("NFC tag not found in database")
+        setNfcError(t("nfcError"))
+        setIsProcessingNFC(false)
+
+        // Auto-dismiss error after 5 seconds
+        setTimeout(() => {
+          setNfcError("")
+        }, 5000)
+
+        return
+      }
+
+      // Call backend API to complete checkpoint
+      const response = await fetch(
+        `${API_URL}checkpoints/${point.id}/complete`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN || ""}`,
+          },
+          body: JSON.stringify({
+            tag_uid: tagId,
+            timestamp: new Date().toISOString(),
+          }),
+        }
+      )
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log("Checkpoint completed successfully:", result)
+        setCheckpointCompleted(true)
+        setNfcProcessed(true)
+
+        // Navigate to completion page after a short delay
+        setTimeout(() => {
+          router.push(`/${locale}/complete/${point.id}`)
+        }, 1500)
+      } else {
+        console.error("Failed to complete checkpoint:", response.statusText)
+        setIsProcessingNFC(false)
+      }
+    } catch (error) {
+      console.error("Error completing checkpoint:", error)
+      setIsProcessingNFC(false)
+    }
+  }
 
   useHandleConnectionData((e) => {
-    setDebugm(e.data)
-    setCounter(counter + 1)
     const data = JSON.parse(e.data)
+    if (!data || data.name !== "nfc") {
+      return
+    }
+    const tagId = data.data
+    if (typeof tagId === "string") {
+      setDebugm(tagId)
+      // Verify NFC tag and complete checkpoint if valid
+      if (enableNFC) {
+        verifyNFCAndCompleteCheckpoint(tagId)
+      }
+    }
+  })
+
+  useHandleConnectionData((e) => {
+    const data = JSON.parse(e.data)
+    if (!data) {
+      return
+    }
+    if (data["name"] !== "location") {
+      return
+    }
     if (data && data["data"] && data["data"]["latitude"]) {
       const newLocation = {
         lat: data["data"]["latitude"],
         lng: data["data"]["longitude"],
       }
       setUserLocation(newLocation)
+      // setDebugm(`${newLocation.lat}, ${newLocation.lng}`)
       setLocationError(false)
       const dist = calculateDistance(
         newLocation.lat,
@@ -98,12 +188,11 @@ export default function NavigationPage() {
         point.targetLat,
         point.targetLng
       )
-      setDistance(dist)
 
       // Set distance level
       if (dist < 40) {
         setDistanceLevel("near")
-        setShowNFCScanner(true)
+        setEnableNFC(true)
       } else if (dist < 200) {
         setDistanceLevel("mid")
       } else {
@@ -123,24 +212,19 @@ export default function NavigationPage() {
       setLocationError(true)
     }
   })
+
   useEffect(() => {
-    // Initial location request
     postFlutterMessage("location", null)
-
-    // Set up interval to refresh location every 1 second
-    const locationInterval = setInterval(() => {
+    postFlutterMessage("nfc", "start")
+    const interval = setInterval(() => {
       postFlutterMessage("location", null)
+      postFlutterMessage("nfc", "read")
     }, 1000)
-
-    // Cleanup interval on unmount or when dependencies change
-    return () => clearInterval(locationInterval)
+    return () => {
+      postFlutterMessage("nfc", "stop")
+      clearInterval(interval)
+    }
   }, [])
-
-  const handleNFCScan = () => {
-    // In a real app, this would trigger NFC scanning
-    console.log("[v0] NFC scan initiated")
-    router.push(`/${locale}/complete/m3`)
-  }
 
   const handleManualCheckIn = () => {
     // Backup check-in method
@@ -165,7 +249,11 @@ export default function NavigationPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-xl font-bold">{t("title")}</h1>
+              <h1 className="text-xl font-bold">
+                {t("title")}
+                {debugm}
+                {counter}
+              </h1>
               <p className="text-sm opacity-90">{point.name}</p>
             </div>
           </div>
@@ -176,6 +264,22 @@ export default function NavigationPage() {
         {locationError && (
           <Alert variant="destructive">
             <AlertDescription>{t("locationError")}</AlertDescription>
+          </Alert>
+        )}
+
+        {nfcError && (
+          <Alert variant="destructive" className="animate-pulse">
+            <AlertDescription className="flex items-center justify-between">
+              <span className="font-medium">{nfcError}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setNfcError("")}
+                className="h-auto p-1 text-destructive hover:text-destructive/80 hover:bg-destructive/10"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </AlertDescription>
           </Alert>
         )}
 
@@ -212,6 +316,9 @@ export default function NavigationPage() {
               <div className="text-center">
                 <h3 className="text-xl font-bold mb-1">{point.name}</h3>
                 <p className="text-sm text-muted-foreground">
+                  {'"' + debugm + '"'}
+                </p>
+                <p className="text-sm text-muted-foreground">
                   {point.description}
                 </p>
               </div>
@@ -220,31 +327,77 @@ export default function NavigationPage() {
         </Card>
 
         {/* Check-in Options */}
-        {showNFCScanner && (
-          <Card className="border-accent bg-accent/5">
+        {enableNFC && (
+          <Card
+            className={`border-accent ${
+              checkpointCompleted
+                ? "bg-green-50 border-green-300"
+                : "bg-accent/5"
+            }`}
+          >
             <CardContent className="p-6 space-y-4">
               <div className="text-center">
-                <MapPin className="h-12 w-12 text-accent mx-auto mb-3" />
-                <h3 className="text-xl font-bold mb-2">{t("arrived")}</h3>
+                <MapPin
+                  className={`h-12 w-12 mx-auto mb-3 ${
+                    checkpointCompleted ? "text-green-600" : "text-accent"
+                  }`}
+                />
+                <h3 className="text-xl font-bold mb-2">
+                  {checkpointCompleted ? t("completed") : t("arrived")}
+                </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  {t("scanOrManual")}
+                  {checkpointCompleted
+                    ? t("checkpointCompleted")
+                    : isProcessingNFC
+                    ? t("processingNFC")
+                    : t("scanOrManual")}
                 </p>
               </div>
 
-              <div className="space-y-3">
-                <Button onClick={handleNFCScan} size="lg" className="w-full">
-                  <Scan className="mr-2 h-5 w-5" />
-                  {t("scanNFC")}
-                </Button>
-                <Button
-                  onClick={handleManualCheckIn}
-                  variant="outline"
-                  size="lg"
-                  className="w-full bg-transparent"
-                >
-                  {t("manualCheckIn")}
-                </Button>
-              </div>
+              {!checkpointCompleted && (
+                <div className="space-y-3">
+                  <Button
+                    size="lg"
+                    className="w-full"
+                    disabled={isProcessingNFC}
+                  >
+                    <Scan className="mr-2 h-5 w-5" />
+                    {isProcessingNFC ? t("processing") : t("scanNFC")}
+                  </Button>
+                  <Button
+                    onClick={handleManualCheckIn}
+                    variant="outline"
+                    size="lg"
+                    className="w-full bg-transparent"
+                    disabled={isProcessingNFC}
+                  >
+                    {t("manualCheckIn")}
+                  </Button>
+                </div>
+              )}
+
+              {checkpointCompleted && (
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-3">
+                    <svg
+                      className="w-8 h-8 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-green-600 font-medium">
+                    {t("redirecting")}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}

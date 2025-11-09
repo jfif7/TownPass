@@ -8,6 +8,7 @@ import 'package:town_pass/gen/assets.gen.dart';
 import 'package:town_pass/service/account_service.dart';
 import 'package:town_pass/service/device_service.dart';
 import 'package:town_pass/service/geo_locator_service.dart';
+import 'package:town_pass/service/magneto_meter_service.dart';
 import 'package:town_pass/service/nfc_service.dart';
 import 'package:town_pass/service/notification_service.dart';
 import 'package:town_pass/service/shared_preferences_service.dart';
@@ -231,6 +232,49 @@ class NfcMessageHandler extends TPWebMessageHandler {
       case 'read':
         String? nfcData = await nfcService.readNfc();
         replyMessage = replyWebMessage(data: nfcData ?? []);
+    }
+
+    onReply?.call(replyMessage);
+  }
+}
+
+
+class MagnetoMeterMessageHandler extends TPWebMessageHandler {
+  @override
+  String get name => 'magnetometer';
+
+  @override
+  handle({
+    required Object? message,
+    required WebUri? sourceOrigin,
+    required bool isMainFrame,
+    required Function(WebMessage reply)? onReply,
+  }) async {
+    var magnetoMeterService = Get.find<MagnetoMeterService>();
+
+    if (message == null || message is! String) {
+      onReply?.call(
+        replyWebMessage(data: false),
+      );
+    }
+
+    if (!magnetoMeterService.isMagnetoMeterAvailable) {
+      onReply?.call(
+        replyWebMessage(data: false),
+      );
+      return;
+    }
+
+    WebMessage replyMessage = replyWebMessage(data: false);
+
+    switch (message as String) {
+      case 'start':
+        await magnetoMeterService.startMagnetoMeterSession();
+      case 'stop':
+        await magnetoMeterService.stopMagnetoMeterSession();
+      case 'read':
+        Map<String, dynamic>? magnetoData = await magnetoMeterService.getMagnetoData();
+        replyMessage = replyWebMessage(data: magnetoData ?? []);
     }
 
     onReply?.call(replyMessage);

@@ -9,6 +9,7 @@ import EventManager from "@/components/admin/EventManager"
 import MissionManager from "@/components/admin/MissionManager"
 import CheckpointManager from "@/components/admin/CheckpointManager"
 import BadgeManager from "@/components/admin/BadgeManager"
+import NFCTagManager from "@/components/admin/NFCTagManager"
 
 export default function AdminPortal() {
   const [activeTab, setActiveTab] = useState("events")
@@ -30,7 +31,7 @@ export default function AdminPortal() {
             </Link>
             <div className="flex-1">
               <h1 className="text-2xl font-bold">Admin Portal</h1>
-              <p className="text-sm opacity-90">管理活動、任務、檢查點和徽章</p>
+              <p className="text-sm opacity-90">管理活動、任務、檢查點、徽章和 NFC 標籤</p>
             </div>
           </div>
         </div>
@@ -39,10 +40,11 @@ export default function AdminPortal() {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8 max-w-7xl">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8 h-12">
+          <TabsList className="grid w-full grid-cols-5 mb-8 h-12">
             <TabsTrigger value="events" className="text-sm">活動 Events</TabsTrigger>
             <TabsTrigger value="missions" className="text-sm">任務 Missions</TabsTrigger>
             <TabsTrigger value="checkpoints" className="text-sm">檢查點 Checkpoints</TabsTrigger>
+            <TabsTrigger value="nfc-tags" className="text-sm">NFC 標籤 NFC Tags</TabsTrigger>
             <TabsTrigger value="badges" className="text-sm">徽章 Badges</TabsTrigger>
           </TabsList>
 
@@ -56,6 +58,10 @@ export default function AdminPortal() {
 
           <TabsContent value="checkpoints" className="mt-0">
             <CheckpointManager />
+          </TabsContent>
+
+          <TabsContent value="nfc-tags" className="mt-0">
+            <NFCTagManager />
           </TabsContent>
 
           <TabsContent value="badges" className="mt-0">

@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "台北通",
-    "appDescription": "GPS 探險遊戲",
+    "appDescription": "尋寶趣",
     "loading": "載入中...",
     "error": "錯誤",
     "success": "成功",
@@ -16,7 +16,7 @@
   },
   "home": {
     "title": "台北通",
-    "subtitle": "GPS 探險遊戲",
+    "subtitle": "尋寶趣",
     "tabs": {
       "available": "可參加",
       "active": "進行中",
@@ -51,6 +51,7 @@
     "checkpointsCount": "{completed}/{total} 個檢查點",
     "done": "完成",
     "navigateHere": "開始導航",
+    "scanQRCode": "掃描 QR Code",
     "answerQuestion": "回答問題",
     "complete": "任務完成！",
     "allCheckpointsCompleted": "您已完成所有檢查點",

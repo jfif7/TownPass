@@ -51,6 +51,7 @@
     "checkpointsCount": "{completed}/{total} checkpoints",
     "done": "Done",
     "navigateHere": "Navigate Here",
+    "scanQRCode": "Scan QR Code",
     "answerQuestion": "Answer Question",
     "complete": "Mission Complete!",
     "allCheckpointsCompleted": "You've completed all checkpoints",

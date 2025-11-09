@@ -51,6 +51,7 @@
     "checkpointsCount": "{completed}/{total} チェックポイント",
     "done": "完了",
     "navigateHere": "ナビゲーション開始",
+    "scanQRCode": "QRコードをスキャン",
     "answerQuestion": "質問に答える",
     "complete": "ミッション完了！",
     "allCheckpointsCompleted": "すべてのチェックポイントを完了しました",

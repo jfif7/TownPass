@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, MapPin, CheckCircle2 } from "lucide-react"
 import { useTranslations, useLocale } from 'next-intl'
 import Link from "next/link"
+import { postFlutterMessage } from "@/hooks/use-flutter"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -163,11 +164,29 @@ export default function MissionDetailPage() {
                     </div>
                     <p className="text-sm text-muted-foreground mb-3">{point.description}</p>
                     {!point.completed && (
-                      <Button asChild size="sm" className="w-full sm:w-auto">
-                        <Link href={`/${locale}/${point.checkpointType === 'question' ? 'question' : 'navigate'}/${point.id}`}>
-                          {point.checkpointType === 'question' ? t('answerQuestion') : t('navigateHere')}
-                        </Link>
-                      </Button>
+                      <>
+                        {point.checkpointType === 'qrcode' ? (
+                          <Button 
+                            size="sm" 
+                            className="w-full sm:w-auto"
+                            onClick={() => postFlutterMessage('qr_code_scan', { checkpointId: point.id })}
+                          >
+                            {t('scanQRCode')}
+                          </Button>
+                        ) : (
+                          <Button asChild size="sm" className="w-full sm:w-auto">
+                            <Link href={`/${locale}/${
+                              point.checkpointType === 'question' 
+                                ? 'question' 
+                                : 'navigate'
+                            }/${point.id}`}>
+                              {point.checkpointType === 'question' 
+                                ? t('answerQuestion') 
+                                : t('navigateHere')}
+                            </Link>
+                          </Button>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>

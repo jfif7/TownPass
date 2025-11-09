@@ -7,6 +7,7 @@ import 'package:town_pass/service/device_service.dart';
 import 'package:town_pass/service/geo_locator_service.dart';
 import 'package:town_pass/service/magneto_meter_service.dart';
 import 'package:town_pass/service/nfc_service.dart';
+import 'package:town_pass/service/compass_service.dart';
 import 'package:town_pass/service/notification_service.dart';
 import 'package:town_pass/service/package_service.dart';
 import 'package:town_pass/service/shared_preferences_service.dart';
@@ -40,6 +41,7 @@ Future<void> initServices() async {
   await Get.putAsync<NotificationService>(() async => await NotificationService().init());
   await Get.putAsync<NfcService>(() async => await NfcService().init());
   await Get.putAsync<MagnetoMeterService>(() async => await MagnetoMeterService().init());
+  await Get.putAsync<CompassService>(() async => await CompassService().init());
 
   Get.put<SubscriptionService>(SubscriptionService());
 }

@@ -26,8 +26,8 @@ const mockPointDetails = {
   id: "p3",
   name: "Food Court",
   description: "Visit the local food court area",
-  targetLat: 24.9950723,
-  targetLng: 121.5430774,
+  targetLat: 25.0214628,
+  targetLng: 121.5349902,
   tagId: "051b8a2b",
 }
 
@@ -93,8 +93,26 @@ export default function NavigationPage() {
   const [nfcProcessed, setNfcProcessed] = useState(false)
   const [checkpointCompleted, setCheckpointCompleted] = useState(false)
   const [nfcError, setNfcError] = useState("")
+  const [compassAngle, setCompassAngle] = useState<number>(0) // Device compass angle
+  const [bearingToTarget, setBearingToTarget] = useState<number>(0) // Bearing to checkpoint
 
-  // Function to verify NFC tag and complete checkpoint
+  // Function to calculate heading that points toward checkpoint
+  const calculateHeadingToTarget = (
+    compassAngle: number,
+    bearingToTarget: number
+  ) => {
+    // Calculate the relative heading to point toward the target
+    // compassAngle: 0° = North, 90° = East, 180°/-180° = South, -90° = West
+    // bearingToTarget: bearing from current location to checkpoint
+
+    let relativeHeading = bearingToTarget - compassAngle
+
+    // Normalize to -180 to 180 range
+    while (relativeHeading > 180) relativeHeading -= 360
+    while (relativeHeading < -180) relativeHeading += 360
+
+    return relativeHeading
+  }
   const verifyNFCAndCompleteCheckpoint = async (tagId: string) => {
     if (isProcessingNFC || nfcProcessed) return
 
@@ -158,11 +176,28 @@ export default function NavigationPage() {
     }
     const tagId = data.data
     if (typeof tagId === "string") {
-      setDebugm(tagId)
       // Verify NFC tag and complete checkpoint if valid
       if (enableNFC) {
         verifyNFCAndCompleteCheckpoint(tagId)
       }
+    }
+  })
+
+  useHandleConnectionData((e) => {
+    const data = JSON.parse(e.data)
+    if (!data || data.name !== "compass") {
+      return
+    }
+    // angle : [-180, 180]
+    const angle = data.data
+
+    if (typeof angle === "number") {
+      setCompassAngle(angle)
+      // setDebugm(`Compass: ${angle}°, Bearing: ${bearingToTarget}°`)
+
+      // Calculate heading to point toward checkpoint
+      const headingToTarget = calculateHeadingToTarget(angle, bearingToTarget)
+      setHeading(headingToTarget)
     }
   })
 
@@ -190,7 +225,7 @@ export default function NavigationPage() {
       )
 
       // Set distance level
-      if (dist < 40) {
+      if (dist < 20) {
         setDistanceLevel("near")
         setEnableNFC(true)
       } else if (dist < 200) {
@@ -199,14 +234,18 @@ export default function NavigationPage() {
         setDistanceLevel("far")
       }
 
-      // Calculate bearing
+      // Calculate bearing to checkpoint and update heading
       const bearing = calculateBearing(
         newLocation.lat,
         newLocation.lng,
         point.targetLat,
         point.targetLng
       )
-      setHeading(bearing)
+      setBearingToTarget(bearing)
+
+      // Update heading using current compass angle and new bearing
+      const headingToTarget = calculateHeadingToTarget(compassAngle, bearing)
+      setHeading(headingToTarget)
     } else {
       console.error("[v0] Geolocation error:", e.data)
       setLocationError(true)
@@ -216,12 +255,15 @@ export default function NavigationPage() {
   useEffect(() => {
     postFlutterMessage("location", null)
     postFlutterMessage("nfc", "start")
+    postFlutterMessage("compass", "start")
     const interval = setInterval(() => {
       postFlutterMessage("location", null)
       postFlutterMessage("nfc", "read")
-    }, 1000)
+      postFlutterMessage("compass", "read")
+    }, 100)
     return () => {
       postFlutterMessage("nfc", "stop")
+      postFlutterMessage("compass", "stop")
       clearInterval(interval)
     }
   }, [])
@@ -249,11 +291,7 @@ export default function NavigationPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-xl font-bold">
-                {t("title")}
-                {debugm}
-                {counter}
-              </h1>
+              <h1 className="text-xl font-bold">{t("title")}</h1>
               <p className="text-sm opacity-90">{point.name}</p>
             </div>
           </div>

@@ -81,8 +81,8 @@
     "locationError": "Unable to access your location. Please enable location services to use navigation.",
     "nfcError": "This NFC tag doesn't match this checkpoint. Please scan the correct NFC tag at this location.",
     "distance": {
-      "near": "Very Close (~40m or less)",
-      "mid": "Getting Closer (40-200m)",
+      "near": "Very Close (~20m or less)",
+      "mid": "Getting Closer (20-200m)",
       "far": "Keep Going (200m+)"
     },
     "arrived": "You've Arrived!",

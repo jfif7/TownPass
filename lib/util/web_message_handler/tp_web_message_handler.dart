@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:town_pass/gen/assets.gen.dart';
 import 'package:town_pass/service/account_service.dart';
+import 'package:town_pass/service/compass_service.dart';
 import 'package:town_pass/service/device_service.dart';
 import 'package:town_pass/service/geo_locator_service.dart';
 import 'package:town_pass/service/magneto_meter_service.dart';
@@ -238,7 +239,6 @@ class NfcMessageHandler extends TPWebMessageHandler {
   }
 }
 
-
 class MagnetoMeterMessageHandler extends TPWebMessageHandler {
   @override
   String get name => 'magnetometer';
@@ -275,6 +275,41 @@ class MagnetoMeterMessageHandler extends TPWebMessageHandler {
       case 'read':
         Map<String, dynamic>? magnetoData = await magnetoMeterService.getMagnetoData();
         replyMessage = replyWebMessage(data: magnetoData ?? []);
+    }
+
+    onReply?.call(replyMessage);
+  }
+}
+
+class CompassMessageHandler extends TPWebMessageHandler {
+  @override
+  String get name => 'compass';
+
+  @override
+  handle({
+    required Object? message,
+    required WebUri? sourceOrigin,
+    required bool isMainFrame,
+    required Function(WebMessage reply)? onReply,
+  }) async {
+    var compassService = Get.find<CompassService>();
+
+    if (message == null || message is! String) {
+      onReply?.call(
+        replyWebMessage(data: false),
+      );
+    }
+
+    WebMessage replyMessage = replyWebMessage(data: false);
+
+    switch (message as String) {
+      case 'start':
+        await compassService.startMagnetoMeterSession();
+      case 'stop':
+        await compassService.stopMagnetoMeterSession();
+      case 'read':
+        double? heading = await compassService.getHeading();
+        replyMessage = replyWebMessage(data: heading ?? []);
     }
 
     onReply?.call(replyMessage);

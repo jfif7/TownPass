@@ -10,7 +10,7 @@ class MagnetoMeterService extends GetxService {
 
   Future<MagnetoMeterService> init() async {
     subscription = magnetometerEventStream(
-            samplingPeriod: const Duration(milliseconds: 500))
+            samplingPeriod: const Duration(milliseconds: 50))
         .listen(
       (MagnetometerEvent event) {
         magnetoData = {

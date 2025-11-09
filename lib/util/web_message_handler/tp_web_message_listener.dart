@@ -16,6 +16,7 @@ abstract class TPWebMessageListener {
         QRCodeScanMessageHandler(),
         NfcMessageHandler(),
         MagnetoMeterMessageHandler(),
+        CompassMessageHandler(),
       ];
 
   static WebMessageListener webMessageListener() {

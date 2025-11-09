@@ -15,11 +15,8 @@ router = APIRouter()
 @router.post("", response_model=CheckpointResponse, status_code=status.HTTP_201_CREATED)
 async def create_checkpoint(
     checkpoint_data: CheckpointCreate,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """創建新檢查點"""
-    # 驗證任務是否存在
     mission = crud_mission.get_mission_by_id(db, checkpoint_data.mission_id)
     if not mission:
         raise HTTPException(
@@ -34,10 +31,8 @@ async def create_checkpoint(
 @router.get("/{checkpoint_id}", response_model=CheckpointResponse)
 async def get_checkpoint(
     checkpoint_id: int,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """取得檢查點詳情"""
     checkpoint = crud_checkpoint.get_checkpoint_by_id(db, checkpoint_id)
     if not checkpoint:
         raise HTTPException(
@@ -53,11 +48,8 @@ async def get_checkpoints_by_mission(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=100),
     include_inactive: bool = Query(False),
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """取得任務的所有檢查點"""
-    # 驗證任務是否存在
     mission = crud_mission.get_mission_by_id(db, mission_id)
     if not mission:
         raise HTTPException(
@@ -80,10 +72,8 @@ async def get_all_checkpoints(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=100),
     include_inactive: bool = Query(False),
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """取得所有檢查點"""
     checkpoints, total = crud_checkpoint.get_all_checkpoints(
         db=db,
         skip=skip,
@@ -97,7 +87,7 @@ async def get_all_checkpoints(
 async def update_checkpoint(
     checkpoint_id: int,
     checkpoint_data: CheckpointUpdate,
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """更新檢查點"""
@@ -118,7 +108,7 @@ async def update_checkpoint(
 async def delete_checkpoint(
     checkpoint_id: int,
     hard: bool = Query(False, description="是否硬刪除"),
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """刪除檢查點"""

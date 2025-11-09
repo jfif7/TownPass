@@ -8,6 +8,15 @@ def get_mission_by_id(db: Session, mission_id: int) -> Mission | None:
     return db.query(Mission).filter(Mission.id == mission_id).first()
 
 
+def get_missions(
+    db: Session,
+    skip: int = 0,
+    limit: int = 100
+) -> List[Mission]:
+    """取得所有任務列表"""
+    return db.query(Mission).filter(Mission.is_active == True).order_by(Mission.order).offset(skip).limit(limit).all()
+
+
 def get_missions_by_event(
     db: Session,
     event_id: int,

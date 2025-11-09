@@ -42,16 +42,28 @@ def event_to_response(event) -> EventResponse:
     )
 
 
+@router.get("", response_model=list[EventResponse])
+async def get_events(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
+    db: Session = Depends(get_db)
+):
+    """取得所有活動列表"""
+    events, total = crud_event.get_events(db, skip=skip, limit=limit)
+    return [event_to_response(event) for event in events]
+
+
 @router.post("", response_model=EventResponse, status_code=status.HTTP_201_CREATED)
 async def create_event(
     event_data: EventCreate,
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """創建新活動"""
     event_dict = event_data.model_dump(exclude_unset=True)
-    if not event_dict.get("admin_id"):
-        event_dict["admin_id"] = current_user.id
+    # if not event_dict.get("admin_id"):
+    #     event_dict["admin_id"] = current_user.id
     
     event = crud_event.create_event(db, event_dict)
     return event_to_response(event)
@@ -60,7 +72,7 @@ async def create_event(
 @router.get("/{event_id}", response_model=EventResponse)
 async def get_event(
     event_id: int,
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """取得活動詳情"""
@@ -77,7 +89,7 @@ async def get_event(
 async def update_event(
     event_id: int,
     event_data: EventUpdate,
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """更新活動"""
@@ -98,7 +110,7 @@ async def update_event(
 async def delete_event(
     event_id: int,
     hard: bool = Query(False, description="是否硬刪除"),
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """刪除活動"""

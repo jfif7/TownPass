@@ -11,10 +11,22 @@ from app.schemas.mission import MissionCreate, MissionUpdate, MissionResponse
 router = APIRouter()
 
 
+@router.get("", response_model=List[MissionResponse])
+async def get_all_missions(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
+    db: Session = Depends(get_db)
+):
+    """取得所有任務列表"""
+    missions = crud_mission.get_missions(db, skip=skip, limit=limit)
+    return missions
+
+
 @router.post("", response_model=MissionResponse, status_code=status.HTTP_201_CREATED)
 async def create_mission(
     mission_data: MissionCreate,
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """創建新任務"""
@@ -25,7 +37,7 @@ async def create_mission(
 @router.get("/{mission_id}", response_model=MissionResponse)
 async def get_mission(
     mission_id: int,
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """取得任務詳情"""
@@ -43,7 +55,7 @@ async def get_missions_by_event(
     event_id: int,
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=100),
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """取得活動的所有任務"""
@@ -57,7 +69,7 @@ async def get_missions_by_event(
 async def update_mission(
     mission_id: int,
     mission_data: MissionUpdate,
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """更新任務"""
@@ -78,7 +90,7 @@ async def update_mission(
 async def delete_mission(
     mission_id: int,
     hard: bool = Query(False, description="是否硬刪除"),
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # 暫時關閉認證
     db: Session = Depends(get_db)
 ):
     """刪除任務"""

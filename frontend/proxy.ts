@@ -13,6 +13,6 @@ export default createMiddleware({
 });
 
 export const config = {
-  // 匹配所有路徑除了 api、_next/static、_next/image 和 favicon.ico
-  matcher: ['/', '/(zh-TW|en|ja)/:path*', '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)']
+  // 匹配所有路徑除了 api、_next/static、_next/image、favicon.ico 和 admin
+  matcher: ['/', '/(zh-TW|en|ja)/:path*', '/((?!api|_next/static|_next/image|favicon.ico|admin|.*\\..*).*)']
 };

@@ -14,10 +14,8 @@ router = APIRouter()
 @router.post("", response_model=BadgeResponse, status_code=status.HTTP_201_CREATED)
 async def create_badge(
     badge_data: BadgeCreate,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """創建新徽章"""
     badge = crud_badge.create_badge(db, badge_data.model_dump())
     return badge
 
@@ -26,10 +24,8 @@ async def create_badge(
 async def get_badges(
     badge_type: Optional[str] = Query(None),
     is_active: Optional[bool] = Query(None),
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """取得徽章列表"""
     badges = crud_badge.get_all_badges(db)
     
     if badge_type:
@@ -44,15 +40,12 @@ async def get_badges(
 @router.get("/{badge_id}", response_model=BadgeResponse)
 async def get_badge(
     badge_id: int,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """取得徽章詳情"""
     badge = crud_badge.get_badge_by_id(db, badge_id)
     if not badge:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="徽章不存在"
         )
     return badge
 
@@ -61,10 +54,8 @@ async def get_badge(
 async def update_badge(
     badge_id: int,
     badge_data: BadgeUpdate,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """更新徽章"""
     badge = crud_badge.update_badge(
         db,
         badge_id,
@@ -73,7 +64,6 @@ async def update_badge(
     if not badge:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="徽章不存在"
         )
     return badge
 

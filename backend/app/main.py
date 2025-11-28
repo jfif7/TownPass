@@ -3,23 +3,29 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.api.v1 import auth, check_in, events, users, badges, results, checkpoints
-from app.api.v1.admin import events as admin_events, missions, nfc_tags, badges as admin_badges, user_badges, checkpoints as admin_checkpoints
+from app.api.v1.admin import (
+    events as admin_events,
+    missions,
+    nfc_tags,
+    badges as admin_badges,
+    user_badges,
+    checkpoints as admin_checkpoints,
+)
 
 settings = get_settings()
 
 app = FastAPI(
-	title=settings.app_name,
-	debug=settings.debug,
-	version="1.0.0",
-	description="TownPass API - NFC 活動報到系統"
+    title=settings.app_name,
+    debug=settings.debug,
+    version="1.0.0",
+    description="TownPass API - NFC 活動報到系統",
 )
-
 app.add_middleware(
-	CORSMiddleware,
-	allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"] if settings.env == "development" else settings.allowed_origins,
-	allow_credentials=True,
-	allow_methods=["*"],
-	allow_headers=["*"],
+    CORSMiddleware,
+    allow_origin_regex=r".*",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # 註冊 API 路由
@@ -34,24 +40,40 @@ app.include_router(results.router, prefix=f"{api_v1_prefix}", tags=["成果"])
 app.include_router(checkpoints.router, prefix=f"{api_v1_prefix}", tags=["檢查點"])
 
 # 管理員 CRUD API
-app.include_router(admin_events.router, prefix=f"{api_v1_prefix}/admin/events", tags=["管理員-活動"])
-app.include_router(missions.router, prefix=f"{api_v1_prefix}/admin/missions", tags=["管理員-任務"])
-app.include_router(nfc_tags.router, prefix=f"{api_v1_prefix}/admin/nfc-tags", tags=["管理員-NFC標籤"])
-app.include_router(admin_badges.router, prefix=f"{api_v1_prefix}/admin/badges", tags=["管理員-徽章"])
-app.include_router(user_badges.router, prefix=f"{api_v1_prefix}/admin/user-badges", tags=["管理員-使用者徽章"])
-app.include_router(admin_checkpoints.router, prefix=f"{api_v1_prefix}/admin/checkpoints", tags=["管理員-檢查點"])
+app.include_router(
+    admin_events.router, prefix=f"{api_v1_prefix}/admin/events", tags=["管理員-活動"]
+)
+app.include_router(
+    missions.router, prefix=f"{api_v1_prefix}/admin/missions", tags=["管理員-任務"]
+)
+app.include_router(
+    nfc_tags.router, prefix=f"{api_v1_prefix}/admin/nfc-tags", tags=["管理員-NFC標籤"]
+)
+app.include_router(
+    admin_badges.router, prefix=f"{api_v1_prefix}/admin/badges", tags=["管理員-徽章"]
+)
+app.include_router(
+    user_badges.router,
+    prefix=f"{api_v1_prefix}/admin/user-badges",
+    tags=["管理員-使用者徽章"],
+)
+app.include_router(
+    admin_checkpoints.router,
+    prefix=f"{api_v1_prefix}/admin/checkpoints",
+    tags=["管理員-檢查點"],
+)
 
 
 @app.get("/")
 async def root():
-	return {
-		"message": "Welcome to TownPass API",
-		"version": "1.0.0",
-		"docs": "/docs",
-		"health": "/health"
-	}
+    return {
+        "message": "Welcome to TownPass API",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/health",
+    }
 
 
 @app.get("/health")
 async def health():
-	return {"status": "ok"}
+    return {"status": "ok"}

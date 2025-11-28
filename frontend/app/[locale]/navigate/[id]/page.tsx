@@ -24,11 +24,11 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL
 // Mock data
 const mockPointDetails = {
   id: "p3",
-  name: "Food Court",
-  description: "Visit the local food court area",
-  targetLat: 25.0214628,
-  targetLng: 121.5349902,
-  tagId: "051b8a2b",
+  name: "活動議程看板",
+  description: "很大，紫紫的，方方的",
+  targetLat: 25.055611,
+  targetLng: 121.51,
+  tagId: ["051b8a2b", "012ceb2d"],
 }
 
 function calculateDistance(
@@ -95,6 +95,7 @@ export default function NavigationPage() {
   const [nfcError, setNfcError] = useState("")
   const [compassAngle, setCompassAngle] = useState<number>(0) // Device compass angle
   const [bearingToTarget, setBearingToTarget] = useState<number>(0) // Bearing to checkpoint
+  const [forceNFC, setForceNFC] = useState(false)
 
   // Function to calculate heading that points toward checkpoint
   const calculateHeadingToTarget = (
@@ -120,7 +121,7 @@ export default function NavigationPage() {
     setNfcError("") // Clear any previous errors
 
     try {
-      if (tagId !== point.tagId) {
+      if (!point.tagId.includes(tagId)) {
         console.log("NFC tag not found in database")
         setNfcError(t("nfcError"))
         setIsProcessingNFC(false)
@@ -134,24 +135,24 @@ export default function NavigationPage() {
       }
 
       // Call backend API to complete checkpoint
-      const response = await fetch(
-        `${API_URL}checkpoints/${point.id}/complete`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN || ""}`,
-          },
-          body: JSON.stringify({
-            tag_uid: tagId,
-            timestamp: new Date().toISOString(),
-          }),
-        }
-      )
+      // const response = await fetch(
+      //   `${API_URL}checkpoints/${point.id}/complete`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN || ""}`,
+      //     },
+      //     body: JSON.stringify({
+      //       tag_uid: tagId,
+      //       timestamp: new Date().toISOString(),
+      //     }),
+      //   }
+      // )
 
-      if (response.ok) {
-        const result = await response.json()
-        console.log("Checkpoint completed successfully:", result)
+      if (true) {
+        // const result = await response.json()
+        // console.log("Checkpoint completed successfully:", result)
         setCheckpointCompleted(true)
         setNfcProcessed(true)
 
@@ -225,10 +226,10 @@ export default function NavigationPage() {
       )
 
       // Set distance level
-      if (dist < 20) {
+      if (dist < 40 || forceNFC) {
         setDistanceLevel("near")
         setEnableNFC(true)
-      } else if (dist < 200) {
+      } else if (dist < 20000) {
         setDistanceLevel("mid")
       } else {
         setDistanceLevel("far")
@@ -251,7 +252,6 @@ export default function NavigationPage() {
       setLocationError(true)
     }
   })
-
   useEffect(() => {
     postFlutterMessage("location", null)
     postFlutterMessage("nfc", "start")
@@ -264,6 +264,15 @@ export default function NavigationPage() {
     return () => {
       postFlutterMessage("nfc", "stop")
       postFlutterMessage("compass", "stop")
+      clearInterval(interval)
+    }
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setForceNFC(true)
+    }, 10000)
+    return () => {
       clearInterval(interval)
     }
   }, [])
@@ -353,9 +362,7 @@ export default function NavigationPage() {
               {/* Target Info */}
               <div className="text-center">
                 <h3 className="text-xl font-bold mb-1">{point.name}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {'"' + debugm + '"'}
-                </p>
+                <p className="text-sm text-muted-foreground"></p>
                 <p className="text-sm text-muted-foreground">
                   {point.description}
                 </p>
@@ -394,14 +401,14 @@ export default function NavigationPage() {
 
               {!checkpointCompleted && (
                 <div className="space-y-3">
-                  <Button
+                  {/* <Button
                     size="lg"
                     className="w-full"
                     disabled={isProcessingNFC}
                   >
                     <Scan className="mr-2 h-5 w-5" />
                     {isProcessingNFC ? t("processing") : t("scanNFC")}
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={handleManualCheckIn}
                     variant="outline"

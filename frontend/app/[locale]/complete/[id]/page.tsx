@@ -5,15 +5,15 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Award, Sparkles, Share2, QrCode } from "lucide-react"
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations, useLocale } from "next-intl"
 import Link from "next/link"
 import Confetti from "react-confetti"
 
 // Mock data
 const mockMissionComplete = {
   id: "m3",
-  title: "Market Square",
-  badgeUrl: "/golden-market-badge.jpg",
+  title: "活動議程看板",
+  badgeUrl: "/board.jpg",
   prizeQRCode: "/qr-code-prize.jpg",
   prizeLink: "https://example.com/claim/prize-abc123",
 }
@@ -21,7 +21,7 @@ const mockMissionComplete = {
 export default function MissionCompletePage() {
   const params = useParams()
   const router = useRouter()
-  const t = useTranslations('complete')
+  const t = useTranslations("complete")
   const locale = useLocale()
   const mission = mockMissionComplete
   const [showConfetti, setShowConfetti] = useState(true)
@@ -41,8 +41,8 @@ export default function MissionCompletePage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: t('shareTitle', { mission: mission.title }),
-          text: t('shareText'),
+          title: t("shareTitle", { mission: mission.title }),
+          text: t("shareText"),
           url: window.location.href,
         })
       } catch (error) {
@@ -53,7 +53,9 @@ export default function MissionCompletePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-accent/20 to-background">
-      {showConfetti && <Confetti width={windowSize.width} height={windowSize.height} />}
+      {showConfetti && (
+        <Confetti width={windowSize.width} height={windowSize.height} />
+      )}
 
       <div className="container mx-auto px-4 py-8 space-y-6">
         {/* Celebration Header */}
@@ -63,10 +65,12 @@ export default function MissionCompletePage() {
           </div>
           <h1 className="text-4xl font-bold text-balance">
             <Sparkles className="inline h-8 w-8 text-accent mb-1" />
-            {t('congratulations')}
+            {t("congratulations")}
             <Sparkles className="inline h-8 w-8 text-accent mb-1" />
           </h1>
-          <p className="text-xl text-muted-foreground">{t('missionComplete')}</p>
+          <p className="text-xl text-muted-foreground">
+            {t("missionComplete")}
+          </p>
         </div>
 
         {/* Badge Card */}
@@ -83,20 +87,20 @@ export default function MissionCompletePage() {
               </div>
               <div className="text-center">
                 <h2 className="text-2xl font-bold mb-2">{mission.title}</h2>
-                <p className="text-muted-foreground">{t('badgeEarned')}</p>
+                <p className="text-muted-foreground">{t("badgeEarned")}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Prize Claim */}
-        <Card>
+        {/* <Card>
           <CardContent className="p-6 space-y-4">
             <div className="text-center">
               <QrCode className="h-12 w-12 text-primary mx-auto mb-3" />
-              <h3 className="text-xl font-bold mb-2">{t('claimPrize')}</h3>
+              <h3 className="text-xl font-bold mb-2">{t("claimPrize")}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                {t('showQR')}
+                {t("showQR")}
               </p>
             </div>
 
@@ -109,26 +113,45 @@ export default function MissionCompletePage() {
             </div>
 
             <div className="space-y-2">
-              <Button asChild variant="outline" className="w-full bg-transparent" size="lg">
-                <a href={mission.prizeLink} target="_blank" rel="noopener noreferrer">
-                  {t('openPrizeLink')}
+              <Button
+                asChild
+                variant="outline"
+                className="w-full bg-transparent"
+                size="lg"
+              >
+                <a
+                  href={mission.prizeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("openPrizeLink")}
                 </a>
               </Button>
-              <Button onClick={handleShare} variant="outline" className="w-full bg-transparent" size="lg">
+              <Button
+                onClick={handleShare}
+                variant="outline"
+                className="w-full bg-transparent"
+                size="lg"
+              >
                 <Share2 className="mr-2 h-5 w-5" />
-                {t('shareAchievement')}
+                {t("shareAchievement")}
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Actions */}
         <div className="space-y-3 pt-4">
           <Button asChild className="w-full" size="lg">
-            <Link href={`/${locale}/event/1`}>{t('backToEvent')}</Link>
+            <Link href={`/${locale}/mission/14`}>{t("backToEvent")}</Link>
           </Button>
-          <Button asChild variant="outline" className="w-full bg-transparent" size="lg">
-            <Link href={`/${locale}`}>{t('goToHome')}</Link>
+          <Button
+            asChild
+            variant="outline"
+            className="w-full bg-transparent"
+            size="lg"
+          >
+            <Link href={`/${locale}`}>{t("goToHome")}</Link>
           </Button>
         </div>
       </div>

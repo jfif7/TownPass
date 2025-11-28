@@ -16,7 +16,7 @@ export default function QuestionPage() {
   const router = useRouter()
   const t = useTranslations("question")
   const locale = useLocale()
-  
+
   const [checkpoint, setCheckpoint] = useState<any | null>(null)
   const [answer, setAnswer] = useState("")
   const [loading, setLoading] = useState(true)
@@ -33,9 +33,9 @@ export default function QuestionPage() {
           },
         })
         const data = await res.json()
-        
-        if (!data) throw new Error('No checkpoint data')
-        
+
+        if (!data) throw new Error("No checkpoint data")
+
         setCheckpoint({
           id: String(data.id),
           name: data.name,
@@ -45,7 +45,7 @@ export default function QuestionPage() {
           missionId: data.mission_id,
         })
       } catch (e) {
-        console.error('Failed to fetch checkpoint:', e)
+        console.error("Failed to fetch checkpoint:", e)
         setCheckpoint(null)
       }
       setLoading(false)
@@ -62,22 +62,22 @@ export default function QuestionPage() {
     try {
       // 在這裡可以調用 API 來記錄答案
       // 目前一律視為正確答案
-      
+
       // 模擬 API 呼叫延遲
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
       setShowSuccess(true)
-      
+
       // 1.5 秒後導向完成頁面
       setTimeout(() => {
         if (checkpoint?.missionId) {
-          router.push(`/${locale}/mission/${checkpoint.missionId}`)
+          router.push(`/${locale}/event/8/badges`)
         } else {
           router.back()
         }
       }, 1500)
     } catch (e) {
-      console.error('Failed to submit answer:', e)
+      console.error("Failed to submit answer:", e)
     } finally {
       setSubmitting(false)
     }
@@ -87,7 +87,9 @@ export default function QuestionPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <p className="text-muted-foreground">{t('loading') || 'Loading...'}</p>
+          <p className="text-muted-foreground">
+            {t("loading") || "Loading..."}
+          </p>
         </div>
       </div>
     )
@@ -97,7 +99,9 @@ export default function QuestionPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-500">{t('notFound') || 'Checkpoint not found'}</p>
+          <p className="text-red-500">
+            {t("notFound") || "Checkpoint not found"}
+          </p>
         </div>
       </div>
     )
@@ -173,7 +177,7 @@ export default function QuestionPage() {
                 disabled={submitting || showSuccess}
                 className="text-lg h-12"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !submitting && !showSuccess) {
+                  if (e.key === "Enter" && !submitting && !showSuccess) {
                     handleSubmit()
                   }
                 }}

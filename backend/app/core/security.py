@@ -15,7 +15,8 @@ from sqlalchemy.orm import Session
 settings = get_settings()
 
 # OAuth2 設定
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+# auto_error=False 允許我們在 get_current_user 中自定義錯誤處理或 mock 邏輯
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
 
 def _preprocess_password(password: str) -> bytes:
@@ -61,7 +62,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> User:
     """從 Token 取得當前使用者"""
@@ -70,6 +71,17 @@ async def get_current_user(
         detail="無法驗證憑證",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    # 1. 檢查是否開啟了 Mock Auth (開發模式用)
+    if settings.mock_auth_user_id is not None:
+        user = db.query(User).filter(User.id == settings.mock_auth_user_id).first()
+        if user:
+            return user
+        # 如果指定了 mock user 但找不到，還是回退到正常的 token 驗證或報錯
+        print(f"Warning: Mock user ID {settings.mock_auth_user_id} not found in database.")
+
+    # 2. 正常 Token 驗證
+    if not token:
+        raise credentials_exception
     
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])

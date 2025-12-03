@@ -22,6 +22,9 @@ class Settings(BaseSettings):
 	secret_key: str = "your-secret-key-change-in-production"
 	algorithm: str = "HS256"
 	access_token_expire_minutes: int = 1440
+	
+	# Dev Mode Auth
+	mock_auth_user_id: int | None = None  # If set, bypass auth and use this user ID
 
 	model_config = SettingsConfigDict(
 		env_file=".env",

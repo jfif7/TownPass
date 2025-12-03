@@ -1,0 +1,81 @@
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: townpass-db-dev
+    environment:
+      POSTGRES_USER: townpass
+      POSTGRES_PASSWORD: townpass
+      POSTGRES_DB: townpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U townpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - townpass-network
+    restart: unless-stopped
+
+  # FastAPI Backend (Development mode with hot reload)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: townpass-backend-dev
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://townpass:townpass@db:5432/townpass
+      - DEBUG=true
+      - MOCK_AUTH_USER_ID=${MOCK_AUTH_USER_ID}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - townpass-network
+    volumes:
+      - ./backend/app:/app/app  # Mount for hot reload
+      - ./backend/alembic:/app/alembic
+      - ./backend/seed.py:/app/seed.py  # Mount seed scripts
+      - ./backend/seed_simple.py:/app/seed_simple.py
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped
+
+  # Next.js Frontend (Development mode with hot reload)
+  frontend:
+    image: node:20-alpine
+    container_name: townpass-frontend-dev
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - NEXT_DEV=true
+      # For dev mode, NEXT_PUBLIC_* vars work at runtime
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1/}
+      - NEXT_PUBLIC_API_TOKEN=${NEXT_PUBLIC_API_TOKEN:-}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: sh -c "corepack enable pnpm && pnpm install && pnpm dev"
+    depends_on:
+      - backend
+    networks:
+      - townpass-network
+    restart: always
+
+volumes:
+  postgres_data_dev:
+    driver: local
+
+networks:
+  townpass-network:
+    driver: bridge
+

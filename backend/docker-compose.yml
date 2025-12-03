@@ -35,14 +35,6 @@ services:
       - ./app:/app/app:ro  # Mount app directory for development
     restart: unless-stopped
 
-  tunnel:
-    image: cloudflare/cloudflared:latest
-    container_name: townpass-backend-tunnel
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
-    restart: unless-stopped
-    networks:
-      - townpass-network
-
 volumes:
   postgres_data:
     driver: local

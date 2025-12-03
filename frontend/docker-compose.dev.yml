@@ -20,17 +20,6 @@ services:
     networks:
       - townpass-network
 
-  # Cloudflare Tunnel
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: townpass-tunnel
-    restart: unless-stopped
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
-    networks:
-      - townpass-network
-    depends_on:
-      - frontend
-
 networks:
   townpass-network:
     driver: bridge

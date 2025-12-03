@@ -20,10 +20,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY app/ ./app/
 COPY alembic/ ./alembic/
-COPY alembic.ini run_migration.py ./
+COPY alembic.ini run_migration.py seed.py seed_simple.py ./
 
 # Set environment variables
-ENV PYTHONPATH=/app
+# Note: Don't set PYTHONPATH to /app to avoid conflicts with alembic package
 ENV DATABASE_URL=postgresql://townpass:townpass@db:5432/townpass
 
 # Create non-root user

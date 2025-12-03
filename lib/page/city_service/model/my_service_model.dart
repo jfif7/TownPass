@@ -189,7 +189,7 @@ extension MyServiceIdExt on MyServiceItemId {
           description: '臺北市定點尋寶活動',
           icon: Assets.svg.iconTreasureHunt.svg(),
           category: MyServiceCategory.explore,
-          destinationUrl: 'https://codefest.onino.tw/',
+          destinationUrl: 'http://localhost:3000',
         ),
     };
   }

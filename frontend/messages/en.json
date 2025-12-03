@@ -20,7 +20,9 @@
     "tabs": {
       "available": "Available",
       "active": "Active",
-      "completed": "Completed"
+      "completed": "Completed",
+      "noUnattended": "No available events",
+      "noCompleted": "No completed events"
     }
   },
   "event": {

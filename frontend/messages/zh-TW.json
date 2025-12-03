@@ -20,7 +20,9 @@
     "tabs": {
       "available": "可參加",
       "active": "進行中",
-      "completed": "已完成"
+      "completed": "已完成",
+      "noUnattended": "無可參加活動",
+      "noCompleted": "未完成任何活動"
     }
   },
   "event": {

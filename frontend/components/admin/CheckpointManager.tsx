@@ -40,7 +40,7 @@ export default function CheckpointManager() {
     mission_id: "",
     name: "",
     description: "",
-    checkpoint_type: "nfc",
+    checkpoint_type: "NFC",
     lat: "",
     lng: "",
     order: 0,
@@ -167,7 +167,7 @@ export default function CheckpointManager() {
       mission_id: "",
       name: "",
       description: "",
-      checkpoint_type: "nfc",
+      checkpoint_type: "NFC",
       lat: "",
       lng: "",
       order: 0,
@@ -219,9 +219,10 @@ export default function CheckpointManager() {
                   value={formData.checkpoint_type}
                   onChange={(e) => setFormData({ ...formData, checkpoint_type: e.target.value })}
                 >
-                  <option value="nfc">NFC</option>
-                  <option value="qrcode">QR Code</option>
-                  <option value="question">問答</option>
+                  <option value="NFC">NFC</option>
+                  <option value="QRCODE">QR Code</option>
+                  <option value="QUESTION">問答</option>
+                  <option value="DISCOUNT">優惠券</option>
                 </select>
               </div>
               <div className="space-y-2">
@@ -279,7 +280,7 @@ export default function CheckpointManager() {
                 rows={2}
               />
             </div>
-            {formData.checkpoint_type === "question" && (
+            {formData.checkpoint_type === "QUESTION" && (
               <div>
                 <Label>問題資料 (JSON)</Label>
                 <Textarea
@@ -290,13 +291,24 @@ export default function CheckpointManager() {
                 />
               </div>
             )}
-            {formData.checkpoint_type === "qrcode" && (
+            {formData.checkpoint_type === "QRCODE" && (
               <div>
                 <Label>QR Code 資料</Label>
                 <Input
                   value={formData.qrcode_data}
                   onChange={(e) => setFormData({ ...formData, qrcode_data: e.target.value })}
                   placeholder="QR Code 內容或識別碼"
+                />
+              </div>
+            )}
+            {formData.checkpoint_type === "DISCOUNT" && (
+              <div>
+                <Label>優惠券連結</Label>
+                <Input
+                  value={formData.qrcode_data}
+                  onChange={(e) => setFormData({ ...formData, qrcode_data: e.target.value })}
+                  placeholder="https://example.com/coupon"
+                  type="url"
                 />
               </div>
             )}
@@ -343,6 +355,7 @@ export default function CheckpointManager() {
                       size="sm"
                       variant="outline"
                       onClick={() => handleEdit(checkpoint)}
+                      className="cursor-pointer"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -350,6 +363,7 @@ export default function CheckpointManager() {
                       size="sm"
                       variant="destructive"
                       onClick={() => handleDelete(checkpoint.id)}
+                      className="cursor-pointer"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

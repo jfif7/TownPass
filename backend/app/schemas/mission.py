@@ -5,6 +5,7 @@ from typing import Optional
 
 class MissionResponse(BaseModel):
     id: int
+    event_id: int
     name: str
     description: Optional[str] = None
     order: int

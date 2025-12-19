@@ -253,6 +253,7 @@ export default function MissionManager() {
                     <Button
                       size="sm"
                       variant="outline"
+                      className="cursor-pointer"
                       onClick={() => handleEdit(mission)}
                     >
                       <Edit className="h-4 w-4" />
@@ -260,6 +261,7 @@ export default function MissionManager() {
                     <Button
                       size="sm"
                       variant="destructive"
+                      className="cursor-pointer"
                       onClick={() => handleDelete(mission.id)}
                     >
                       <Trash2 className="h-4 w-4" />

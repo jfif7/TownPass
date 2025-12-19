@@ -165,7 +165,7 @@ export default function MissionDetailPage() {
                     <p className="text-sm text-muted-foreground mb-3">{point.description}</p>
                     {!point.completed && (
                       <>
-                        {point.checkpointType === 'qrcode' ? (
+                        {point.checkpointType === 'QRCODE' ? (
                           <Button 
                             size="sm" 
                             className="w-full sm:w-auto"
@@ -173,14 +173,20 @@ export default function MissionDetailPage() {
                           >
                             {t('scanQRCode')}
                           </Button>
+                        ) : point.checkpointType === 'DISCOUNT' ? (
+                          <Button asChild size="sm" className="w-full sm:w-auto">
+                            <Link href={`/${locale}/discount/${point.id}`}>
+                              {t('viewDiscount')}
+                            </Link>
+                          </Button>
                         ) : (
                           <Button asChild size="sm" className="w-full sm:w-auto">
                             <Link href={`/${locale}/${
-                              point.checkpointType === 'question' 
+                              point.checkpointType === 'QUESTION' 
                                 ? 'question' 
                                 : 'navigate'
                             }/${point.id}`}>
-                              {point.checkpointType === 'question' 
+                              {point.checkpointType === 'QUESTION' 
                                 ? t('answerQuestion') 
                                 : t('navigateHere')}
                             </Link>

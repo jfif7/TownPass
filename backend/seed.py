@@ -208,8 +208,8 @@ def create_missions_and_checkpoints(db, events):
             db.flush()  # 確保獲得 mission.id
             all_missions.append(mission)
             
-            # 每個任務 3 個檢查點 (nfc, question, qrcode 各一)
-            checkpoint_types = ['nfc', 'question', 'qrcode']
+            # 每個任務 3 個檢查點 (nfc, question, discount 各一)
+            checkpoint_types = ['NFC', 'QUESTION', 'DISCOUNT']
             
             for cp_idx, cp_type in enumerate(checkpoint_types):
                 lat = random.uniform(*taipei_lat_range)
@@ -228,10 +228,18 @@ def create_missions_and_checkpoints(db, events):
                 }
                 
                 # 根據類型添加額外資料
-                if cp_type == "question":
+                if cp_type == "QUESTION":
                     checkpoint_data["question_data"] = random.choice(QUESTIONS)
-                elif cp_type == "qrcode":
-                    checkpoint_data["qrcode_data"] = f"QR-{fake.uuid4()[:8]}"
+                elif cp_type == "DISCOUNT":
+                    # 為優惠券檢查點添加優惠券連結
+                    discount_urls = [
+                        "https://www.example.com/coupon/taipei101",
+                        "https://www.example.com/discount/restaurant",
+                        "https://www.example.com/offer/cafe",
+                        "https://www.example.com/promo/shop",
+                        "https://www.example.com/deal/museum",
+                    ]
+                    checkpoint_data["qrcode_data"] = random.choice(discount_urls)
                 
                 checkpoint = Checkpoint(**checkpoint_data)
                 db.add(checkpoint)
@@ -239,7 +247,7 @@ def create_missions_and_checkpoints(db, events):
                 all_checkpoints.append(checkpoint)
                 
                 # 為 NFC 檢查點創建 NFC 標籤
-                if cp_type == "nfc":
+                if cp_type == "NFC":
                     nfc_tag = NFCTag(
                         tag_uid=fake.uuid4(),
                         checkpoint_id=checkpoint.id,
@@ -332,12 +340,15 @@ def create_user_progress(db, users, events, checkpoints, mission_badge_map):
             completed_count = random.randint(1, min(5, len(event_checkpoints)))
             completed_checkpoints = random.sample(event_checkpoints, completed_count)
             
+            # 使用報到時間或活動開始時間作為基準
+            base_timestamp = attendances[-1].timestamp if attendances else event.start_time + timedelta(hours=random.randint(1, 24))
+            
             for checkpoint in completed_checkpoints:
                 progress = UserCheckpointProgress(
                     user_id=user.id,
                     checkpoint_id=checkpoint.id,
                     completed=True,
-                    completed_at=attendance.timestamp + timedelta(minutes=random.randint(5, 60))
+                    completed_at=base_timestamp + timedelta(minutes=random.randint(5, 60))
                 )
                 db.add(progress)
                 progresses.append(progress)

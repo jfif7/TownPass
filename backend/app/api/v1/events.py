@@ -112,6 +112,7 @@ async def get_event_detail(
             # 如果沒有 checkpoints,視為未完成
             mission_responses.append(MissionResponse(
                 id=mission.id,
+                event_id=mission.event_id,
                 name=mission.name,
                 description=mission.description,
                 order=mission.order,
@@ -138,6 +139,7 @@ async def get_event_detail(
         
         mission_responses.append(MissionResponse(
             id=mission.id,
+            event_id=mission.event_id,
             name=mission.name,
             description=mission.description,
             order=mission.order,

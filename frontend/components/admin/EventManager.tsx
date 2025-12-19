@@ -265,6 +265,7 @@ export default function EventManager() {
                   </div>
                   <div className="flex gap-2">
                     <Button
+                      className="cursor-pointer"
                       size="sm"
                       variant="outline"
                       onClick={() => handleEdit(event)}
@@ -272,6 +273,7 @@ export default function EventManager() {
                       <Edit className="h-4 w-4" />
                     </Button>
                     <Button
+                      className="cursor-pointer"
                       size="sm"
                       variant="destructive"
                       onClick={() => handleDelete(event.id)}

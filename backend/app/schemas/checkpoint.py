@@ -5,9 +5,10 @@ from enum import Enum
 
 
 class CheckpointType(str, Enum):
-    NFC = "nfc"
-    QUESTION = "question"
-    QRCODE = "qrcode"
+    NFC = "NFC"
+    QUESTION = "QUESTION"
+    QRCODE = "QRCODE"
+    DISCOUNT = "DISCOUNT"
 
 
 class CheckpointBase(BaseModel):

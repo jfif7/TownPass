@@ -23,6 +23,7 @@ type Checkpoint = {
   id: number
   name: string
   mission_id: number
+  checkpoint_type: string
 }
 
 export default function NFCTagManager() {
@@ -171,11 +172,13 @@ export default function NFCTagManager() {
                   required
                 >
                   <option value="">選擇檢查點</option>
-                  {checkpoints.map((checkpoint) => (
-                    <option key={checkpoint.id} value={checkpoint.id}>
-                      {checkpoint.name} (Mission: {checkpoint.mission_id})
-                    </option>
-                  ))}
+                  {checkpoints
+                    .filter((checkpoint) => checkpoint.checkpoint_type === 'NFC')
+                    .map((checkpoint) => (
+                      <option key={checkpoint.id} value={checkpoint.id}>
+                        {checkpoint.name} (Mission: {checkpoint.mission_id})
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="space-y-2">
@@ -259,6 +262,7 @@ export default function NFCTagManager() {
                     <Button
                       size="sm"
                       variant="outline"
+                      className="cursor-pointer"
                       onClick={() => handleEdit(tag)}
                     >
                       <Edit className="h-4 w-4" />
@@ -266,6 +270,7 @@ export default function NFCTagManager() {
                     <Button
                       size="sm"
                       variant="destructive"
+                      className="cursor-pointer"
                       onClick={() => handleDelete(tag.id)}
                     >
                       <Trash2 className="h-4 w-4" />

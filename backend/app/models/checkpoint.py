@@ -7,9 +7,10 @@ from app.core.database import Base
 
 
 class CheckpointType(str, enum.Enum):
-    NFC = "nfc"
-    QUESTION = "question"
-    QRCODE = "qrcode"
+    NFC = "NFC"
+    QUESTION = "QUESTION"
+    QRCODE = "QRCODE"
+    DISCOUNT = "DISCOUNT"
 
 
 class Checkpoint(Base):

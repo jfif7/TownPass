@@ -53,6 +53,7 @@
     "navigateHere": "ナビゲーション開始",
     "scanQRCode": "QRコードをスキャン",
     "answerQuestion": "質問に答える",
+    "viewDiscount": "割引を見る",
     "complete": "ミッション完了！",
     "allCheckpointsCompleted": "すべてのチェックポイントを完了しました",
     "claimBadge": "バッジを獲得",
@@ -75,6 +76,22 @@
     "instruction1": "質問を注意深く読んで答えを入力してください",
     "instruction2": "送信ボタンをクリックするか、Enterキーを押して答えを送信してください",
     "instruction3": "すべての答えが受け入れられ、完了すると報酬ポイントを獲得できます"
+  },
+  "discount": {
+    "title": "割引クーポン",
+    "loading": "読み込み中...",
+    "notFound": "チェックポイントが見つかりません",
+    "description": "クーポンの説明",
+    "openCoupon": "クーポンを開く",
+    "rewardInfo": "このチェックポイントを完了すると獲得",
+    "points": "ポイント",
+    "checkInSuccess": "チェックイン成功！",
+    "checkInError": "チェックインに失敗しました。もう一度お試しください",
+    "alreadyCompleted": "このチェックポイントはすでに完了しています",
+    "instructions": "説明",
+    "instruction1": "下のボタンをクリックしてクーポンリンクを開いてください",
+    "instruction2": "クーポンを店舗に提示して割引を受けてください",
+    "instruction3": "完了すると報酬ポイントを獲得できます"
   },
   "navigation": {
     "title": "ナビゲーション",

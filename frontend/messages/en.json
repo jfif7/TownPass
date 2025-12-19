@@ -55,6 +55,7 @@
     "navigateHere": "Navigate Here",
     "scanQRCode": "Scan QR Code",
     "answerQuestion": "Answer Question",
+    "viewDiscount": "View Discount",
     "complete": "Mission Complete!",
     "allCheckpointsCompleted": "You've completed all checkpoints",
     "claimBadge": "Claim Your Badge",
@@ -77,6 +78,22 @@
     "instruction1": "Read the question carefully and enter your answer",
     "instruction2": "Click submit or press Enter to submit your answer",
     "instruction3": "All answers will be accepted, and you'll earn reward points upon completion"
+  },
+  "discount": {
+    "title": "Discount Coupon",
+    "loading": "Loading...",
+    "notFound": "Checkpoint not found",
+    "description": "Coupon Description",
+    "openCoupon": "Open Coupon",
+    "rewardInfo": "Complete this checkpoint to earn",
+    "points": "points",
+    "checkInSuccess": "Check-in successful!",
+    "checkInError": "Check-in failed, please try again",
+    "alreadyCompleted": "You have already completed this checkpoint",
+    "instructions": "Instructions",
+    "instruction1": "Click the button below to open the coupon link",
+    "instruction2": "Show the coupon to the merchant to enjoy the discount",
+    "instruction3": "You'll earn reward points upon completion"
   },
   "navigation": {
     "title": "Navigation",

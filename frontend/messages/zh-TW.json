@@ -55,6 +55,7 @@
     "navigateHere": "開始導航",
     "scanQRCode": "掃描 QR Code",
     "answerQuestion": "回答問題",
+    "viewDiscount": "查看優惠",
     "complete": "任務完成！",
     "allCheckpointsCompleted": "您已完成所有檢查點",
     "claimBadge": "領取徽章",
@@ -77,6 +78,22 @@
     "instruction1": "請仔細閱讀問題並輸入您的答案",
     "instruction2": "按下提交按鈕或按 Enter 鍵送出答案",
     "instruction3": "所有答案都會被接受，完成後即可獲得獎勵積分"
+  },
+  "discount": {
+    "title": "優惠券",
+    "loading": "載入中...",
+    "notFound": "找不到檢查點資料",
+    "description": "優惠券說明",
+    "openCoupon": "開啟優惠券",
+    "rewardInfo": "完成此檢查點可獲得",
+    "points": "點數",
+    "checkInSuccess": "打卡成功！",
+    "checkInError": "打卡失敗，請稍後再試",
+    "alreadyCompleted": "您已經完成此檢查點",
+    "instructions": "使用說明",
+    "instruction1": "點擊下方按鈕開啟優惠券連結",
+    "instruction2": "向店家出示優惠券以享受優惠",
+    "instruction3": "完成後即可獲得獎勵積分"
   },
   "navigation": {
     "title": "導航",

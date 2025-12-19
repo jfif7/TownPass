@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY app/ ./app/
 COPY alembic/ ./alembic/
-COPY alembic.ini run_migration.py seed.py seed_simple.py ./
+COPY alembic.ini seed.py seed_simple.py ./
 
 # Set environment variables
 # Note: Don't set PYTHONPATH to /app to avoid conflicts with alembic package
